@@ -42,6 +42,7 @@ def create_led_grid(sc, **kwargs):
         lamp_name = "lamp" + str(i + 1)
         # The lamp as cone.
         lamp_data = bpy.data.lamps.new(name=lamp_name, type='SPOT')
+        lamp_data.energy = 0.0 # The lamp if off.
         lamp_object = bpy.data.objects.new(name=lamp_name,
                                            object_data=lamp_data)
         sc.objects.link(lamp_object)
@@ -75,7 +76,7 @@ def delete_all_objects():
 
 # It renders a scene (bpy.context.scene), sc, with a camera (bpy.types.Camera),
 # cam, and saves the result in render_path ('str') as PNG file.
-def take_photos(cam, sc, sufix, **kwargs):
+def take_photo(cam, sc, sufix, **kwargs):
     if bpy.data.is_saved == False:
         dir_name = 'tmp_output_render'
     else:
@@ -95,4 +96,4 @@ def take_photos(cam, sc, sufix, **kwargs):
 if __name__ == '__main__':
     delete_all_objects()
     scene = bpy.context.scene
-    take_photos(create_led_grid(scene), scene, '01')
+    take_photo(create_led_grid(scene), scene, '01')
