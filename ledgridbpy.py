@@ -1,11 +1,12 @@
 import bpy
 from mathutils import Matrix
+import math
 
-# It creates a LED grid with a camera and a sample to be illuminated.
+# Create a LED grid with a camera and a sample to be illuminated.
 def create_led_grid(sc, **kwargs):
     RADIUS_LED_CYL = 4
     DEPTH_LED_CYL = 0
-    SAMPLE_HEIGHT = 10
+    SAMPLE_HEIGHT = 100
     SCALE_SAMPLE = 2
     h_leds = kwargs.pop('h_leds', 8)  # It is equivalent to the number of
                                       # columns of the LED grid.
@@ -64,18 +65,18 @@ def create_led_grid(sc, **kwargs):
     bpy.ops.mesh.primitive_cylinder_add(location=(x, y, 0),
                                         radius=RADIUS_LED_CYL * SCALE_SAMPLE,
                                         depth=SAMPLE_HEIGHT,
-                                        rotation=(0, 1, 1))
+                                        rotation=(math.radians(90), 0, 0))
     return cam_object
 
-# It deletes all objects of the current blend file.
+# Delete all objects of the current blend file.
 def delete_all_objects():
     l_objects = list(bpy.data.objects)
     for o in l_objects:  # Select all objects.
         o.select = True
     bpy.ops.object.delete()  # Delete the selected objects.
 
-# It renders a scene (bpy.context.scene), sc, with a camera (bpy.types.Camera),
-# cam, and saves the result in render_path ('str') as PNG file.
+# Render a scene (bpy.context.scene), sc, with a camera (bpy.types.Camera),
+# cam, and save the result in render_path ('str') as PNG file.
 def take_photo(cam, sc, sufix, **kwargs):
     if bpy.data.is_saved == False:
         dir_name = 'tmp_output_render'
@@ -92,8 +93,27 @@ def take_photo(cam, sc, sufix, **kwargs):
     # print(render_path)
     sc.render.filepath = render_path
     bpy.ops.render.render(write_still=True)
+
+# Return a list ('list') with all lamps (bpy.types.Lamp) of the blend file.
+def get_lamps(**kwargs):
+    prefix = kwargs.pop('prefix', 'lamp')
+    l_lamps = list()
+    for o in bpy.data.objects:
+        if prefix in o.name:
+            l_lamps.append(o)
+    return l_lamps
+
+# Turn on a lamp each time of the grid, take a photo of the mesh and save
+# it as PNG file.
+def illuminate_step_by_step(cam, sc):
+    l_lamps = get_lamps()
+    for i in range(len(l_lamps)):
+        l_lamps[i].data.energy = 2.0
+        take_photo(cam, sc, str(i + 1))
+        l_lamps[i].data.energy = 0.0
            
 if __name__ == '__main__':
     delete_all_objects()
     scene = bpy.context.scene
-    take_photo(create_led_grid(scene), scene, '01')
+    cam = create_led_grid(scene)
+    illuminate_step_by_step(cam, scene)
