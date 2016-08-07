@@ -56,6 +56,14 @@ def create_led_grid(sc):
     # The sample.
     bpy.ops.mesh.primitive_cylinder_add(location=(X_CENTER, Y_CENTER, 0), radius=RADIUS_LED_CYL * SCALE_SAMPLE, depth=SAMPLE_HEIGHT, rotation=(0, 1, 1))
 
+# It deletes all objects of the current blend file.
+def delete_all_objects():
+    l_objects = list(bpy.data.objects)
+    for o in l_objects:  # Select all objects.
+        o.select = True
+    bpy.ops.object.delete()  # Delete the selected objects.
+           
 if __name__ == '__main__':
+    delete_all_objects()
     scene = bpy.context.scene
     create_led_grid(scene)
