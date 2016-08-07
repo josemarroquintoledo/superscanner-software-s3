@@ -64,6 +64,7 @@ def create_led_grid(sc, **kwargs):
                                         radius=RADIUS_LED_CYL * SCALE_SAMPLE,
                                         depth=SAMPLE_HEIGHT,
                                         rotation=(0, 1, 1))
+    return cam_object
 
 # It deletes all objects of the current blend file.
 def delete_all_objects():
@@ -71,8 +72,27 @@ def delete_all_objects():
     for o in l_objects:  # Select all objects.
         o.select = True
     bpy.ops.object.delete()  # Delete the selected objects.
+
+# It renders a scene (bpy.context.scene), sc, with a camera (bpy.types.Camera),
+# cam, and saves the result in render_path ('str') as PNG file.
+def take_photos(cam, sc, sufix, **kwargs):
+    if bpy.data.is_saved == False:
+        dir_name = 'tmp_output_render'
+    else:
+        dir_name = bpy.data.filepath[:-6] + '_output_render'
+    dest = kwargs.pop('dest', dir_name)
+    name = kwargs.pop('name', '')
+    sc.camera = cam
+    dest += '/'
+    if name != '':
+        dest += '_'
+    dest += sufix
+    render_path = dest
+    # print(render_path)
+    sc.render.filepath = render_path
+    bpy.ops.render.render(write_still=True)
            
 if __name__ == '__main__':
     delete_all_objects()
     scene = bpy.context.scene
-    create_led_grid(scene)
+    take_photos(create_led_grid(scene), scene, '01')
