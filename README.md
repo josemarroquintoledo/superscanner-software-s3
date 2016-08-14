@@ -1,10 +1,10 @@
 Super Scanner Software (S3)
-=======================
+===========================
 
 Super Scanner Software (S3) is an open-source and **completely free software environment to implement a low-cost microscopy**, which uses Fourier Prychographic algorithm, **as a 3D scanner**.
 
 Software Requirements
----------------------------------
+---------------------
 
 > **Note:** currently, we are in the development phase and building the environment in machines that run the 64-bit version of **[Linux Mint 18 'Sarah'](https://linuxmint.com/download.php)** with MATE. As this GNU/Linux distribution **is based on another**, it is very probable that these packages work in your installation update to its latest version.
 
@@ -14,7 +14,17 @@ S3 is a set of Python modules to be executed in notebook Jupyter and Blender. Fo
 
 - [**Blender 2.77a**](https://www.blender.org/download/). It does not require to be installed: download it, untar and execute it.
 
+Folder's description
+--------------------
+Within the main folder, **super-scanner-software-s3**:
+
+- **blend-scripts**: it contains Python scripts to be imported and executed directly in Blender. Those files **simulate the scanner's structure and tasks** with Blender.
+
+- **jupyter-modules**: it has **Python moudules written as Jupyter notebooks**. For example, the implementation of the Fourier Ptychographic algorithm is a Jupyter notebook.
+
+
 Importing and Executing the Code
-------------------------------------------------
+--------------------------------
+
 ### In Blender
 The files within **blend-scripts** can be imported in Blender from **Choose Screen layout**&rarr;**Scripting**&rarr;<kbd>Open</kbd>. To execute them, press <kbd>Run Script</kbd> button and wait for the result.
