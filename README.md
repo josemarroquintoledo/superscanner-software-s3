@@ -1,7 +1,7 @@
 Super Scanner Software (S3)
 ===========================
 
-Super Scanner Software (S3) is an **open-source and completely free software environment to implement a low-cost microscopy**, which uses [Fourier Prychography](https://sites.google.com/site/gazheng/Fourier-Ptychograph)y algorithm, as a **3D scanner**. S3 is part of [**Super Scanner**](http://www.superscanner.cl) proyect.
+Super Scanner Software (S3) is an **open-source and completely free software environment to implement a low-cost microscopy**, which uses [Fourier Ptychography](https://sites.google.com/site/gazheng/Fourier-Ptychograph) algorithm, as a **3D scanner**. S3 is part of [**Super Scanner**](http://www.superscanner.cl) project.
 
 Software Requirements
 ---------------------
@@ -20,7 +20,7 @@ Within the main folder, **super-scanner-software-s3**:
 
 - **blend-scripts**: it contains Python **scripts to be imported and executed directly in Blender**. Those files **simulate the scanner's structure and some tasks** such as the taking low resolution photographs with a different LED of the grid for the subsequent call of the Fourier Ptychography.
 
-- **jupyter-modules**: it has **Python moudules written as Jupyter notebooks**. With those, it is possible to reconstruct the Hi-Res image from the sample from a Lo-Res image set.
+- **jupyter-modules**: it has **Python modules written as Jupyter notebooks**. With those, it is possible to reconstruct the Hi-Res image from the sample from a Lo-Res image set.
 
 - **img**: it has some images files to be used by [fwdimaging.ipynb](jupyter-modules/fwdimaging.ipynb)
 
@@ -32,8 +32,6 @@ Importing and Executing the Code
 In the main folder, there is a **sample notebook**: [tpl-s3.ipynb](tpl-s3.ipynb). In any notebook, a cell is executed from **Cells**&rarr;**Run Cell** or with <kbd>Shift</kbd> &#43; <kbd>Enter</kbd>.
 
 > **Note**: ours notebook import others as modules. To get that feature in your Jupyter installation, follow the instructions in [98-jupyter-nb-import.ipynb](jupyter-modules/autostart/98-jupyter-nb-import.ipynb)
-
-If you are an curious user, we suggest that you investigate the 
 
 ### In Blender
 
