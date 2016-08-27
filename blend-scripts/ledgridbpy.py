@@ -3,12 +3,42 @@ from mathutils import Matrix
 import math
 import os
 
+# Set up some parameters of a scene, sc ('bpy.context.scene').
+def set_up_sc(sc, **kwargs):
+    wpx = kwargs.pop('wpx', 64)
+    hpx = kwargs.pop('hpx', 64)
+    antialias = kwargs.pop('antialias', '8')
+    bw = kwargs.pop('bw', True)
+    extension = kwargs.pop('extension', 'TIFF')
+    sc.render.resolution_x = wpx
+    sc.render.resolution_y = hpx
+    sc.render.antialiasing_samples = antialias
+    sc.render.use_overwrite = True
+    sc.render.image_settings.file_format = extension
+    if bw:
+        sc.render.image_settings.color_mode = 'BW'
+    else:
+        sc.render.image_settings.color_mode = 'RGB'
+
 # Delete all objects of the current blend file.
 def delete_all_objects():
     l_objects = list(bpy.data.objects)
     for o in l_objects:  # Select all objects.
         o.select = True
     bpy.ops.object.delete()  # Delete the selected objects.
+
+# "Return a string that contains a sequence n-zeros followed by num ('int') as
+# 'str', for example, num_str_zeros(89, 4) returns '0089'". From
+# fwdimaging.ipynb Jupyter notebook.
+def num_str_zeros(num, n_digs, matlab=False):
+    if matlab:  # Begin the numeration with 1 in the filename.
+        num += 1
+    len_num = len(str(num))
+    str_num = ''
+    for i in range(n_digs - len_num):
+        str_num += '0'
+    str_num += str(num)
+    return str_num
 
 # Return the number of LEDs per row and column, the camera ('bpy.types.Camera')
 # and the list with (x, y, z) coordinates 'tuple') of the all LED of the grid.
@@ -45,7 +75,7 @@ def create_led_grid(sc, **kwargs):
         y_init -= dist
     for i in range(len(led_grid_coord)):
         x_i, y_i, z_i = led_grid_coord[i]
-        lamp_name = "lamp" + str(i + 1)
+        lamp_name = "lamp" + num_str_zeros(i, len(str(rows ** 2)), matlab=True)
         # The lamp as a cone.
         lamp_data = bpy.data.lamps.new(name=lamp_name, type='SPOT')
         lamp_data.energy = 0.0 # The lamp if off.
@@ -68,19 +98,6 @@ def create_led_grid(sc, **kwargs):
     sc.objects.active = cam_object
     # cam_object ('bpy.types.Camera') MUST BE RETURNED to render the scene.
     return rows, cam_object, led_grid_coord
-
-# "Return a string that contains a sequence n-zeros followed by num ('int') as
-# 'str', for example, num_str_zeros(89, 4) returns '0089'". From
-# fwdimaging.ipynb Jupyter notebook.
-def num_str_zeros(num, n_digs, matlab=False):
-    if matlab:  # Begin the numeration with 1 in the filename.
-        num += 1
-    len_num = len(str(num))
-    str_num = ''
-    for i in range(n_digs - len_num):
-        str_num += '0'
-    str_num += str(num)
-    return str_num
 
 # Render a scene ('bpy.context.scene'), sc, with a camera ('bpy.types.Camera'),
 # cam, and save the result in render_path ('str') as PNG file.
@@ -108,7 +125,11 @@ def get_lamps(prefix='lamp'):
     return l_lamps
 
 if __name__ == '__main__':
-    delete_all_objects()
-    scene = bpy.context.scene
+    # Uncomment the line below and EXECUTE ONCE before import your mesh.
+    # delete_all_objects()
+    # UNCOMMENT ALL BELOW to render the scene.
+    ''' scene = bpy.context.scene
+    set_up_sc(scene)
     rows, cam, _ = create_led_grid(scene)
     illuminate_step_by_step(rows, cam, scene)
+    '''
