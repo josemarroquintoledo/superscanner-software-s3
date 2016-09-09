@@ -18,18 +18,22 @@ Folders' Description
 --------------------
 Within the main folder, **super-scanner-software-s3**:
 
+- **blend-meshes**: **printable parts and pieces** of Super Scanner Hardware (S2H) and the complete model to manipulate it in Blender are here.
+
 - **blend-scripts**: it contains Python **scripts to be imported and executed directly in Blender**. Those files **simulate the scanner's structure and some tasks** such as the taking low resolution photographs with a different LED of the grid for the subsequent call of the Fourier Ptychography.
 
 - **jupyter-modules**: it has **Python modules written as Jupyter notebooks**. With those, it is possible to reconstruct the Hi-Res image from the sample from a Lo-Res image set.
 
 - **img**: it has some images files to be used by [fwdimaging.ipynb](jupyter-modules/fwdimaging.ipynb)
 
+- **stl**: some models to use within the Blender scripts.
+
 Importing and Executing the Code
 --------------------------------
 
 ### In Jupyter
 
-In the main folder, there is a **sample notebook**: [tpl-s3.ipynb](tpl-s3.ipynb). In any notebook, a cell is executed from **Cells**&rarr;**Run Cell** or with <kbd>Shift</kbd> &#43; <kbd>Enter</kbd>.
+In the main folder, there is a **sample notebook**: [examples.ipynb](examples.ipynb). In any notebook, a cell is executed from **Cells**&rarr;**Run Cell** or with <kbd>Shift</kbd> &#43; <kbd>Enter</kbd>.
 
 > **Note**: ours notebook import others as modules. To get that feature in your Jupyter installation, follow the instructions in [98-jupyter-nb-import.ipynb](jupyter-modules/autostart/98-jupyter-nb-import.ipynb)
 
