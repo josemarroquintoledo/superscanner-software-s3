@@ -1,7 +1,7 @@
 Super Scanner Software (S3)
 ===========================
 
-Super Scanner Software (S3) is an **open-source and completely free software environment to implement a low-cost scanner 3D**, which is also a **microscope and a 3D printer**. S3 is part of [**Super Scanner**](http://www.superscanner.cl) project.
+Super Scanner Software (S3) is an **open-source and completely free software environment to implement a low-cost scanner 3D** that is also a **microscope and a 3D printer**. S3 is part of [**Super Scanner**](http://www.superscanner.cl) project.
 
 To obtain high-quality and Hi-Res images, [**Super Scanner**](http://www.superscanner.cl) implements the [Fourier Ptychography](https://sites.google.com/site/gazheng/Fourier-Ptychograph) algorithm.
 
@@ -12,13 +12,13 @@ To obtain high-quality and Hi-Res images, [**Super Scanner**](http://www.supersc
 Software Requirements
 ---------------------
 
-> **Note:** currently, we are in the development phase and building the environment in machines that run the 64-bit version of **[Linux Mint 18 'Sarah'](https://www.linuxmint.com/rel_sarah_cinnamon_whatsnew.php)** with MATE and **[budgie-remix](https://budgie-remix.org)**, which is based on **[Ubuntu 16.04.1 LTS](https://wiki.ubuntu.com/XenialXerus/ReleaseNotes?_ga=1.19022523.2089693014.1474004057)**.
+> **Note:** the correct functioning of these Jupyter modules has been tested in machines that run the 64-bit version of **[Linux Mint 18 'Sarah'](https://www.linuxmint.com/rel_sarah_cinnamon_whatsnew.php)** and **[budgie-remix](https://budgie-remix.org)**, which is based on **[Ubuntu 16.04.1 LTS](https://wiki.ubuntu.com/XenialXerus/ReleaseNotes?_ga=1.19022523.2089693014.1474004057)**.
 
 S3 is a set of Python modules to be executed in notebook [Jupyter](http://jupyter.org) and [Blender](https://www.blender.org). For now, it is sufficient that you install:
 
 - [**Anaconda3 (Python 3.5) 4.1.1**](https://www.continuum.io/downloads).
 
-- [**Blender 2.77a**](https://www.blender.org/download/). It does not require to be installed: download it, untar and execute it.
+- [**Blender 2.77a**](https://www.blender.org/download/). It does not require to be installed: download it, untar it and execute it. It also be installed from the command-line with ``$ sudo apt-get install blender``.
 
 Folders' Description
 --------------------
@@ -39,13 +39,13 @@ Importing and Executing the Code
 
 ### In Jupyter
 
+> **Note:** after the installation of [**Anaconda3](https://www.continuum.io/downloads), navigate to [autostart](jupyter-modules/autostart) (jupyter-modules&rarr;autostart) and follow the instructions of the notebooks there.
+
 In the main folder, there is a **sample notebook**: [examples.ipynb](examples.ipynb). In any notebook, a cell is executed from **Cells**&rarr;**Run Cell** or with <kbd>Shift</kbd> &#43; <kbd>Enter</kbd>. Remember to run the notebook server from the command line with:
 
 ```
 $ jupyter notebook examples.ipynb
 ```
-
-> **Note**: ours notebook import others as modules. To get that feature in your Jupyter installation, follow the instructions in [98-jupyter-nb-import.ipynb](jupyter-modules/autostart/98-jupyter-nb-import.ipynb)
 
 ### In Blender
 
@@ -70,4 +70,4 @@ Zheng, G. (2015). *Fourier Ptychographic Imaging: A MATLAB® tutorial*. San Rafa
 
 Dong, S. (2014). *Development of Gigapixel Microscopy*. Retrieved from http://digitalcommons.uconn.edu/gs_theses/687/
 
-> **Note:** the image set and the reconstructed image at the beginning were obtained with `phaseretrieval.get_photo(n=9, sim=True, ampitude='BobMachines_microscopy-043--fly-wing_flickr_1024x685.tif')`.
+> **Note:** the image set and the reconstructed image at the beginning were obtained with `phaseretrieval.get_photo(n=9, sim=True, ampitude='img/BobMachines_microscopy-043--fly-wing_flickr_1024x685.tif')`.
