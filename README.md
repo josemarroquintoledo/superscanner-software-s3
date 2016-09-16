@@ -1,7 +1,13 @@
 Super Scanner Software (S3)
 ===========================
 
-Super Scanner Software (S3) is an **open-source and completely free software environment to implement a low-cost microscopy**, which uses [Fourier Ptychography](https://sites.google.com/site/gazheng/Fourier-Ptychograph) algorithm, as a **3D scanner**. S3 is part of [**Super Scanner**](http://www.superscanner.cl) project.
+Super Scanner Software (S3) is an **open-source and completely free software environment to implement a low-cost scanner 3D**, which is also **microscope and 3D printer**. S3 is part of [**Super Scanner**](http://www.superscanner.cl) project.
+
+To obtain high-quality and Hi-Res images, [**Super Scanner**](http://www.superscanner.cl) implements the [Fourier Ptychography](https://sites.google.com/site/gazheng/Fourier-Ptychograph) algorithm.
+
+![Lo-Res and Low-Quality Image Set](img/for-doc/EN_set-n9-256x171_fly-wing_flickr.jpg)
+
+![Reconstruction in High-Quality and Hi-Res](https://github.com/josemarroquintoledo/super-scanner-software-s3/blob/master/img/for-doc/EN_Hi-Res_fly-wing_flickr_wide_2304x685.jpg)
 
 Software Requirements
 ---------------------
@@ -63,3 +69,5 @@ Zheng, G. Ou, X. Hortsmeyer, R. Chung, J. & Yang, Ch. (2014). Fourier Ptychograp
 Zheng, G. (2015). *Fourier Ptychographic Imaging: A MATLAB® tutorial*. San Rafael, CA: Morgan & Claypool Publishers.
 
 Dong, S. (2014). *Development of Gigapixel Microscopy*. Retrieved from http://digitalcommons.uconn.edu/gs_theses/687/
+
+> **Note:** the image set and the reconstructed image at the beginning were obtained with `phaseretrieval.get_photo(n=9, sim=True, ampitude='BobMachines_microscopy-043--fly-wing_flickr_1024x685.tif')`.
