@@ -39,7 +39,7 @@ Importing and Executing the Code
 
 ### In Jupyter
 
-> **Note:** after the installation of [**Anaconda3](https://www.continuum.io/downloads), navigate to [autostart](jupyter-modules/autostart) (jupyter-modules&rarr;autostart) and follow the instructions of the notebooks there.
+> **Note:** after the installation of [Anaconda3](https://www.continuum.io/downloads), navigate to [autostart](jupyter-modules/autostart) (jupyter-modules&rarr;autostart) and follow the instructions of the notebooks there.
 
 In the main folder, there is a **sample notebook**: [examples.ipynb](examples.ipynb). In any notebook, a cell is executed from **Cells**&rarr;**Run Cell** or with <kbd>Shift</kbd> &#43; <kbd>Enter</kbd>. Remember to run the notebook server from the command line with:
 
@@ -53,10 +53,11 @@ The files within **blend-scripts** can be imported in Blender from **Choose Scre
 
 #### Execute Blender code in a Jupyter notebook
 
-[panzy](https://github.com/panzi) provides a [respository](https://github.com/panzi/blender_ipython) to run Blender script in Jupyter notebooks. Before to follow the instructions from [there](https://github.com/panzi/blender_ipython), **make sure you installed the dependences**. Anaconda3 does not resolve them.
+[panzy](https://github.com/panzi) provides a [respository](https://github.com/panzi/blender_ipython) to run Blender script in Jupyter notebooks. Before to follow the instructions from [there](https://github.com/panzi/blender_ipython), **make sure you installed the dependences**, because Anaconda3 does not resolve them:
 
 ```
-$ sudo pip3 install ipython notebook
+$ sudo apt-get install python3-pip
+$ sudo pip3 install --upgrade pip jupyter ipython notebook
 ```
 
 References
