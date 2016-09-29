@@ -1,7 +1,10 @@
 Super Scanner Software (S3)
 ===========================
 
-Super Scanner Software (S3) is an **open-source and completely free software environment to implement a low-cost scanner 3D** that is also a **microscope and a 3D printer**. S3 is part of [**Super Scanner**](http://www.superscanner.cl) project.
+Super Scanner Software (S3) is an **free and open-source software environment used for implementing a low-cost scanner 3D**, which can also function as a **microscope and a 3D printer**. S3 is the software portion of [**Super Scanner**](http://www.superscanner.cl) project.
+
+
+'Super Scanner Software (S3) is the software portion of the Super Scanner project.  Super Scanner is a Free and Open Source software environment used for implementing a low-cost 3D scanner, which can also function as a microscope and a 3D printer."
 
 To obtain high-quality and Hi-Res images, [**Super Scanner**](http://www.superscanner.cl) implements the [Fourier Ptychography](https://sites.google.com/site/gazheng/Fourier-Ptychograph) algorithm.
 
@@ -22,17 +25,20 @@ S3 is a set of Python modules to be executed in notebook [Jupyter](http://jupyte
 
 Folders' Description
 --------------------
+
 Within the main folder, **super-scanner-software-s3**:
 
-- **blend-meshes**: **printable parts and pieces** of Super Scanner Hardware (S2H) and the complete model to manipulate it in Blender are here.
+- **[blend-meshes](blend-meshes/)**: it **contains printable parts and pieces** of Super Scanner Hardware (S2H), **the complete model** of the machine manipulable in Blender and **scenes that execute Blender scripts**.
 
-- **blend-scripts**: it contains Python **scripts to be imported and executed directly in Blender**. Those files **simulate the scanner's structure and some tasks** such as the taking low resolution photographs with a different LED of the grid for the subsequent call of the Fourier Ptychography.
+- **[blend-scripts](blend-scripts/)**: it has Jupyter notebooks that import the `bpy` module, the [Blender Python API](https://www.blender.org/api/blender_python_api_2_78_release/) , to **access to the data and functions of Blender outside of it**. With them, for example, it is possible to simulate the picture taking process for photogrammetry.
 
-- **jupyter-modules**: it has **Python modules written as Jupyter notebooks**. With those, it is possible to reconstruct the Hi-Res image from the sample from a Lo-Res image set.
+- **[examples](examples/)**: it is a folder with **sample Jupyter notebooks**.
 
-- **img**: it has some images files to be used by [fwdimaging.ipynb](jupyter-modules/fwdimaging.ipynb)
+- **[jupyter-modules](jupyter-modules/)**: it contains **Python modules (libraries) written as Jupyter notebooks**. The Fourier Ptychography algorithm is implemented with them.
 
-- **stl**: some models to use within the Blender scripts.
+- **[img](img/)**: it has **pictures** that are used by some notebooks.
+
+- **[stl](stl/)**: it contains the **meshes as STL files** used in the Blender files that import scripts.
 
 Importing and Executing the Code
 --------------------------------
@@ -41,10 +47,13 @@ Importing and Executing the Code
 
 > **Note:** after the installation of [Anaconda3](https://www.continuum.io/downloads), navigate to [autostart](jupyter-modules/autostart) (jupyter-modules&rarr;autostart) and follow the instructions of the notebooks there.
 
-In the main folder, there is a **sample notebook**: [examples.ipynb](examples.ipynb). In any notebook, a cell is executed from **Cells**&rarr;**Run Cell** or with <kbd>Shift</kbd> &#43; <kbd>Enter</kbd>. Remember to run the notebook server from the command line with:
+Within of the [examples](examples/) folder, there are **sample notebooks** such as [fp-examples.ipynb](examples/fp-examples.ipynb)
+
+In any notebook, a cell is executed from **Cells**&rarr;**Run Cell** or with <kbd>Shift</kbd> &#43; <kbd>Enter</kbd>. Remember to run the notebook server from the command line with:
 
 ```
-$ jupyter notebook examples.ipynb
+$ cd super-scanner-software-s3/
+$ jupyter notebook
 ```
 
 ### In Blender
@@ -53,7 +62,7 @@ The files within **blend-scripts** can be imported in Blender from **Choose Scre
 
 #### Execute Blender code in a Jupyter notebook
 
-[panzy](https://github.com/panzi) provides a [respository](https://github.com/panzi/blender_ipython) to run Blender script in Jupyter notebooks. Before to follow the instructions from [there](https://github.com/panzi/blender_ipython), **make sure you installed the dependences**, because Anaconda3 does not resolve them:
+[panzi](https://github.com/panzi) provides a [respository](https://github.com/panzi/blender_ipython) to run Blender script in Jupyter notebooks. Before to follow the instructions from [there](https://github.com/panzi/blender_ipython), **make sure you installed the dependences**, because Anaconda3 does not resolve them:
 
 ```
 $ sudo apt-get install python3-pip
@@ -71,4 +80,4 @@ Zheng, G. (2015). *Fourier Ptychographic Imaging: A MATLAB® tutorial*. San Rafa
 
 Dong, S. (2014). *Development of Gigapixel Microscopy*. Retrieved from http://digitalcommons.uconn.edu/gs_theses/687/
 
-> **Note:** the image set and the reconstructed image at the beginning were obtained with `phaseretrieval.get_photo(n=9, sim=True, ampitude='img/BobMachines_microscopy-043--fly-wing_flickr_1024x685.tif')`.
+> **Note:** the image set and the reconstructed image at the beginning were obtained with a simulated LED grid of 9 lamps over [BobMachines_microscopy-043--fly-wing_flickr_1024x685.tif](img/BobMachines_microscopy-043--fly-wing_flickr_1024x685.tif)
