@@ -30,15 +30,13 @@ Within the main folder, **super-scanner-software-s3**:
 
 - **[blend-meshes](blend-meshes/)**: it **contains printable parts and pieces** of Super Scanner Hardware (S2H), **the complete model** of the machine manipulable in Blender and **scenes that execute Blender scripts**.
 
-- **[blend-scripts](blend-scripts/)**: it has Jupyter notebooks that import the `bpy` module, the [Blender Python API](https://www.blender.org/api/blender_python_api_2_78_release/) , to **access to the data and functions of Blender outside of it**. With them, for example, it is possible to simulate the picture taking process for photogrammetry.
-
 - **[examples](examples/)**: it is a folder with **sample Jupyter notebooks**.
 
-- **[jupyter-modules](jupyter-modules/)**: it contains **Python modules (libraries) written as Jupyter notebooks**. The Fourier Ptychography algorithm is implemented with them.
+- **[jupyter-modules](jupyter-modules/)**: it contains **Python modules (libraries) written as Jupyter notebooks**. For example, this notebooks are used by the Fourier Ptychography algorithm and to access to the data and functions of Blender outside of it to simulate the picture taking process for photogrammetry, among others.
 
 - **[img](img/)**: it has **pictures** that are used by some notebooks.
 
-- **[stl](stl/)**: it contains the **meshes as STL files** used in the Blender files that import scripts.
+- **[stl](stl/)**: it contains the **meshes as STL files** used in the Blender files.
 
 Importing and Executing the Code
 --------------------------------
