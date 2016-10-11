@@ -1,7 +1,12 @@
 Super Scanner Software (S3)
 ===========================
 
-Super Scanner Software (S3) is an **free and open-source software environment used for implementing a low-cost scanner 3D**, which can also function as a **microscope and a 3D printer**. S3 is the software portion of [**Super Scanner**](http://www.superscanner.cl) project.
+Super Scanner Software (S3) is an **free and open-source software environment used for implementing a low-cost scanner 3D**, which can also function as a **microscope and a 3D printer**. S3 is the software portion of [**Super Scanner**](http://en.superscanner.cl) project.
+
+Functions
+---------
+
+### Microscope
 
 To obtain high-quality and Hi-Res images, [**Super Scanner**](http://www.superscanner.cl) implements the [Fourier Ptychography](https://sites.google.com/site/gazheng/Fourier-Ptychograph) algorithm.
 
@@ -28,7 +33,7 @@ After the installation requirements, **download** Super Scanner Software and **r
 $ cd ~
 $ git clone https://github.com/josemarroquintoledo/super-scanner-software-s3.git
 $ cd super-scanner-software-s3
-$ jupyter notebok
+$ jupyter notebook
 ```
 
 Folders' Description
