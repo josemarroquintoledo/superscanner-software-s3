@@ -3,9 +3,6 @@ Super Scanner Software (S3)
 
 Super Scanner Software (S3) is an **free and open-source software environment used for implementing a low-cost scanner 3D**, which can also function as a **microscope and a 3D printer**. S3 is the software portion of [**Super Scanner**](http://www.superscanner.cl) project.
 
-
-'Super Scanner Software (S3) is the software portion of the Super Scanner project.  Super Scanner is a Free and Open Source software environment used for implementing a low-cost 3D scanner, which can also function as a microscope and a 3D printer."
-
 To obtain high-quality and Hi-Res images, [**Super Scanner**](http://www.superscanner.cl) implements the [Fourier Ptychography](https://sites.google.com/site/gazheng/Fourier-Ptychograph) algorithm.
 
 ![Lo-Res and Low-Quality Image Set](img/for-doc/EN_set-n9-256x171_fly-wing_flickr.jpg)
@@ -22,6 +19,17 @@ S3 is a set of Python modules to be executed in notebook [Jupyter](http://jupyte
 - [**Anaconda3 (Python 3.5) 4.1.1**](https://www.continuum.io/downloads).
 
 - [**Blender 2.77a**](https://www.blender.org/download/). It does not require to be installed: download it, untar it and execute it. It also be installed from the command-line with ``$ sudo apt-get install blender``.
+
+- **Git**. Install it from command-line too with ``$ sudo apt-get install git``.
+
+After the installation requirements, **download** Super Scanner Software and **run** Jupyter by first time:
+
+```
+$ cd ~
+$ git clone https://github.com/josemarroquintoledo/super-scanner-software-s3.git
+$ cd super-scanner-software-s3
+$ jupyter notebok
+```
 
 Folders' Description
 --------------------
@@ -47,12 +55,7 @@ Importing and Executing the Code
 
 Within of the [examples](examples/) folder, there are **sample notebooks** such as [fp-examples.ipynb](examples/fp-examples.ipynb)
 
-In any notebook, a cell is executed from **Cells**&rarr;**Run Cell** or with <kbd>Shift</kbd> &#43; <kbd>Enter</kbd>. Remember to run the notebook server from the command line with:
-
-```
-$ cd super-scanner-software-s3/
-$ jupyter notebook
-```
+In any notebook, a cell is executed from **Cells**&rarr;**Run Cell** or with <kbd>Shift</kbd> &#43; <kbd>Enter</kbd>.
 
 ### In Blender
 
