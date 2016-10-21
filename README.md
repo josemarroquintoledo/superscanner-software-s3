@@ -27,6 +27,8 @@ S3 is a set of Python modules to be executed in notebook [Jupyter](http://jupyte
 
 - **Git**. Install it from command-line too with ``$ sudo apt-get install git``.
 
+- [**py3exiv2**](http://www.py3exiv2.tuxfamily.org). It allows to use the lib exiv2 with Python 3. exiv2 is a C++ library designed to handle the EXIF image metadata. Install with ``$ sudo pip3 install --upgrade py3exiv2``.
+
 After the installation requirements, **download** Super Scanner Software and **run** Jupyter by first time:
 
 ```
