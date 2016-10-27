@@ -17,7 +17,7 @@ To obtain high-quality and Hi-Res images, [**Super Scanner**](http://www.supersc
 Software Requirements
 ---------------------
 
-> **Note:** the correct functioning of these Jupyter modules has been tested in machines that run the 64-bit version of **[Linux Mint 18 'Sarah'](https://www.linuxmint.com/rel_sarah_cinnamon_whatsnew.php)** and **[budgie-remix](https://budgie-remix.org)**, which is based on **[Ubuntu 16.04.1 LTS](https://wiki.ubuntu.com/XenialXerus/ReleaseNotes?_ga=1.19022523.2089693014.1474004057)**.
+> **Note:** the correct functioning of these Jupyter modules has been tested in machines that run the 64-bit version of **[Linux Mint 18 'Sarah'](https://www.linuxmint.com/rel_sarah_cinnamon_whatsnew.php)** and **[budgie-remix](https://budgie-remix.org)** that are based on **[Ubuntu 16.04.1 LTS](https://wiki.ubuntu.com/XenialXerus/ReleaseNotes?_ga=1.19022523.2089693014.1474004057)**.
 
 S3 is a set of Python modules to be executed in notebook [Jupyter](http://jupyter.org) and [Blender](https://www.blender.org). For now, it is sufficient that you install:
 
@@ -29,7 +29,11 @@ S3 is a set of Python modules to be executed in notebook [Jupyter](http://jupyte
 
 - [**py3exiv2**](http://www.py3exiv2.tuxfamily.org). It allows to use the lib exiv2 with Python 3. exiv2 is a C++ library designed to handle the EXIF image metadata. Install with ``$ sudo pip3 install --upgrade py3exiv2``.
 
-After the installation requirements, **download** Super Scanner Software and **run** Jupyter by first time:
+- [**Mesurelt**](https://github.com/Antonioya/blender/tree/master/measureit) (optional) by [Antonioya](https://github.com/Antonioya) is an add-on &laquo;for displaying measures [of meshes] in the vewport&raquo; in Blender. Download the .ZIP file and install it in Blender from **File**&rarr;**User Preferences...**&rarr;**Add-ons**&rarr;<kbd>Install from File...</kbd>
+
+- [**Numba**](http://numba.pydata.org) speed up the execution of the implementation of our Python code &laquo;generating optimized machine code using the LLVM compiler infrastructure at import time, runtime, or statically&raquo;. The installation of Numba is easy after installing [Anaconda](https://www.continuum.io/downloads). For that, from the command-line: `$ conda install numba`.
+
+After the installation of the requirements, **download** Super Scanner Software and **run** Jupyter by first time:
 
 ```
 $ cd ~
