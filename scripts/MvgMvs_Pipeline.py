@@ -2,6 +2,7 @@
 #! -*- encoding: utf-8 -*-
 #
 # Created by @FlachyJoe
+# Edited by @sumenage, fpizarro92@live.cl
 #
 # this script is for easy use of OpenMVG and OpenMVS
 #
@@ -49,7 +50,7 @@ from contextlib import contextmanager
 
 
 # Indicate the openMVG and openMVS binary directories
-SOFTWARE = os.path.join(os.path.expanduser('~'),"super-scanner-software-s3","software")
+SOFTWARE = os.path.expanduser('~')
 OPENMVG_BIN = os.path.join(SOFTWARE, "openMVG_Build", "Linux-x86_64-RELEASE")
 OPENMVS_BIN = os.path.join(SOFTWARE, "openMVS_build", "bin")
 
