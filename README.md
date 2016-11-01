@@ -41,7 +41,7 @@ S3 is a set of Python modules to be executed in notebook [Jupyter](http://jupyte
 
 10. [**MeshLab**](http://meshlab.sourceforge.net) to manipulate the 3D models (results). Install with: `$ sudo apt-get install meshlab`.
 
-After the installation of the requirements, **download** Super Scanner Software and **run** Jupyter by first time:
+After the installation of the requirements, (step **11th**) **download Super Scanner Software** and **run Jupyter** by first time:
 
 ```
 $ cd ~
