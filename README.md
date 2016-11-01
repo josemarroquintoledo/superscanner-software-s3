@@ -19,27 +19,27 @@ Software Requirements
 
 > **Note:** the correct functioning of these Jupyter modules has been tested in machines that run the 64-bit version of **[Linux Mint 18 'Sarah'](https://www.linuxmint.com/rel_sarah_cinnamon_whatsnew.php)** and **[budgie-remix](https://budgie-remix.org)** that are based on **[Ubuntu 16.04.1 LTS](https://wiki.ubuntu.com/XenialXerus/ReleaseNotes?_ga=1.19022523.2089693014.1474004057)**.
 
-S3 is a set of Python modules to be executed in notebook [Jupyter](http://jupyter.org) and [Blender](https://www.blender.org). For now, it is sufficient that you install:
+S3 is a set of Python modules to be executed in notebook [Jupyter](http://jupyter.org) and [Blender](https://www.blender.org). For that, you have to **install the software packages in the list below**. We suggest the following order:
 
-- [**Anaconda3 (Python 3.5) 4.1.1**](https://www.continuum.io/downloads).
+1. [**Git**](https://git-scm.com). Install it from command-line too with ``$ sudo apt-get install git``.
 
-- [**Blender 2.77a**](https://www.blender.org/download/). It does not require to be installed: download it, untar it and execute it. It also be installed from the command-line with ``$ sudo apt-get install blender``.
+2. [**openMVG**](https://github.com/openMVG/openMVG) by [pmoulon](https://github.com/pmoulon) to &#171;recover camera poses and a sparse 3D point-cloud from an input set of images&#187; to reconstruct its 3D model. See its [building tex file](https://raw.githubusercontent.com/openMVG/openMVG/master/BUILD).
 
-- [**IPython for Blender**](https://github.com/panzi/blender_ipython) by [panzi](https://github.com/panzi) to run Blender script in Jupyter notebooks. Before to follow the instructions from [there](https://github.com/panzi/blender_ipython), **make sure you installed the dependences**, because Anaconda3 does not resolve them: `$ sudo apt-get install python3-pip & sudo pip3 install --upgrade pip jupyter ipython notebook`.
+3. [**openMVS**](https://github.com/cdcseacave/openMVS) by [cdcseacave](https://github.com/cdcseacave) &#171;to recover the full surface of the scene to be reconstructed&#187; from the camera poses and the sparse 3D point-cloud obtained with openMVG. See the [building wiki page](https://github.com/cdcseacave/openMVS/wiki/Building) of this software project.
 
-- [**Git**](https://git-scm.com). Install it from command-line too with ``$ sudo apt-get install git``.
+4. [**Anaconda3 (Python 3.5) 4.1.1**](https://www.continuum.io/downloads).
 
-- [**py3exiv2**](http://www.py3exiv2.tuxfamily.org). It allows to use the lib exiv2 with Python 3. exiv2 is a C++ library designed to handle the EXIF image metadata. Install with ``$ sudo pip3 install --upgrade py3exiv2``.
+5. [**Numba**](http://numba.pydata.org) speed up the execution of the implementation of our Python code &laquo;generating optimized machine code using the LLVM compiler infrastructure at import time, runtime, or statically&raquo;. The installation of Numba is easy after installing [Anaconda](https://www.continuum.io/downloads). For that, from the command-line: `$ conda install numba`.
 
-- [**Mesurelt**](https://github.com/Antonioya/blender/tree/master/measureit) (optional) by [Antonioya](https://github.com/Antonioya) is an add-on &laquo;for displaying measures [of meshes] in the vewport&raquo; in Blender. Download the .ZIP file and install it in Blender from **File**&rarr;**User Preferences...**&rarr;**Add-ons**&rarr;<kbd>Install from File...</kbd>
+6. [**Blender 2.77a**](https://www.blender.org/download/). It does not require to be installed: download it, untar it and execute it. It also be installed from the command-line with ``$ sudo apt-get install blender``.
 
-- [**Numba**](http://numba.pydata.org) speed up the execution of the implementation of our Python code &laquo;generating optimized machine code using the LLVM compiler infrastructure at import time, runtime, or statically&raquo;. The installation of Numba is easy after installing [Anaconda](https://www.continuum.io/downloads). For that, from the command-line: `$ conda install numba`.
+7. [**Mesurelt**](https://github.com/Antonioya/blender/tree/master/measureit) (optional) by [Antonioya](https://github.com/Antonioya) is an add-on &laquo;for displaying measures [of meshes] in the vewport&raquo; in Blender. Download the .ZIP file and install it in Blender from **File**&rarr;**User Preferences...**&rarr;**Add-ons**&rarr;<kbd>Install from File...</kbd>
 
-- [**openMVG**](https://github.com/openMVG/openMVG) by [pmoulon](https://github.com/pmoulon) to &#171;recover camera poses and a sparse 3D point-cloud from an input set of images&#187; to reconstruct its 3D model. See its [building tex file](https://raw.githubusercontent.com/openMVG/openMVG/master/BUILD).
+8. [**py3exiv2**](http://www.py3exiv2.tuxfamily.org). It allows to use the lib exiv2 with Python 3. exiv2 is a C++ library designed to handle the EXIF image metadata. Install with ``$ sudo pip3 install --upgrade py3exiv2``.
 
-- [**openMVS**](https://github.com/cdcseacave/openMVS) by [cdcseacave](https://github.com/cdcseacave) &#171;to recover the full surface of the scene to be reconstructed&#187; from the camera poses and the sparse 3D point-cloud obtained with openMVG. See the [building wiki page](https://github.com/cdcseacave/openMVS/wiki/Building) of this software project.
+9. [**IPython for Blender**](https://github.com/panzi/blender_ipython) by [panzi](https://github.com/panzi) to run Blender script in Jupyter notebooks. Before to follow the instructions from [there](https://github.com/panzi/blender_ipython), **make sure you installed the dependences**, because Anaconda3 does not resolve them: `$ sudo apt-get install python3-pip & sudo pip3 install --upgrade pip jupyter ipython notebook`.
 
-- [**MeshLab**](http://meshlab.sourceforge.net) to manipulate the 3D models (results). Install with: `$ sudo apt-get install meshlab`.
+10. [**MeshLab**](http://meshlab.sourceforge.net) to manipulate the 3D models (results). Install with: `$ sudo apt-get install meshlab`.
 
 After the installation of the requirements, **download** Super Scanner Software and **run** Jupyter by first time:
 
