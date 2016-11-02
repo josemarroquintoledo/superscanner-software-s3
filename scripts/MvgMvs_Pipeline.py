@@ -128,7 +128,7 @@ class stepsStore :
                 ["-i", "%reconstruction_dir%/sfm_data.bin", "-o", "%mvs_dir%/scene.mvs","-d","%mvs_dir%"]],
             [   "Densify point cloud",
                 os.path.join(OPENMVS_BIN,"DensifyPointCloud"),
-                ["--input-file", "%mvs_dir%/scene.mvs"]],
+                ["--input-file", "%mvs_dir%/scene.mvs", "--resolution-level","0"]], #"-w", "%mvs_dir%",
             [   "Reconstruct the mesh",
                 os.path.join(OPENMVS_BIN,"ReconstructMesh"),
                 ["%mvs_dir%/scene_dense.mvs"]],
