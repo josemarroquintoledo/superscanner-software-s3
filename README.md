@@ -1,14 +1,14 @@
-Super Scanner Software (S3)
+SuperScanner Software (S3)
 ===========================
 
-Super Scanner Software (S3) is an **free and open-source software environment used for implementing a low-cost scanner 3D**, which can also function as a **microscope and a 3D printer**. S3 is the software portion of [**Super Scanner**](http://en.superscanner.cl) project.
+SuperScanner Software (S3) is an **free and open-source software environment used for implementing a low-cost scanner 3D**, which can also function as a **microscope and a 3D printer**. S3 is the software portion of [**SuperScanner**](http://en.superscanner.cl) project.
 
 Functions
 ---------
 
 ### Microscope
 
-To obtain high-quality and Hi-Res images, [**Super Scanner**](http://www.superscanner.cl) implements the [Fourier Ptychography](https://sites.google.com/site/gazheng/Fourier-Ptychograph) algorithm.
+To obtain high-quality and Hi-Res images, [**SuperScanner**](http://www.superscanner.cl) implements the [Fourier Ptychography](https://sites.google.com/site/gazheng/Fourier-Ptychograph) algorithm.
 
 ![Lo-Res and Low-Quality Image Set](img/for-doc/EN_set-n9-256x171_fly-wing_flickr.jpg)
 
@@ -41,7 +41,7 @@ S3 is a set of Python modules to be executed in notebook [Jupyter](http://jupyte
 
 10. [**MeshLab**](http://meshlab.sourceforge.net) to manipulate the 3D models (results). Install with: `$ sudo apt-get install meshlab`.
 
-After the installation of the requirements, (step **11th**) **download Super Scanner Software** and **run Jupyter** by first time:
+After the installation of the requirements, (step **11th**) **download SuperScanner Software** and **run Jupyter** by first time:
 
 ```
 $ cd ~
@@ -55,7 +55,7 @@ Folders' Description
 
 Within the main folder, **super-scanner-software-s3**:
 
-- **[blend-meshes](blend-meshes/)**: it **contains printable parts and pieces** of Super Scanner Hardware (S2H), **the complete model** of the machine manipulable in Blender and **scenes that execute Blender scripts**.
+- **[blend-meshes](blend-meshes/)**: it **contains printable parts and pieces** of SuperScanner Hardware (S2H), **the complete model** of the machine manipulable in Blender and **scenes that execute Blender scripts**.
 
 - **[examples](examples/)**: it is a folder with **sample Jupyter notebooks**.
 
