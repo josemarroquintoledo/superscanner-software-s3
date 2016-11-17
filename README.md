@@ -3,16 +3,10 @@ SuperScanner Software (S3)
 
 SuperScanner Software (S3) is an **free and open-source software environment used for implementing a low-cost scanner 3D**, which can also function as a **microscope and a 3D printer**. S3 is the software portion of [**SuperScanner**](http://en.superscanner.cl) project.
 
-Functions
----------
+The Framework
+-------------
 
-### Microscope
-
-To obtain high-quality and Hi-Res images, [**SuperScanner**](http://www.superscanner.cl) implements the [Fourier Ptychography](https://sites.google.com/site/gazheng/Fourier-Ptychograph) algorithm.
-
-![Lo-Res and Low-Quality Image Set](img/for-doc/EN_set-n9-256x171_fly-wing_flickr.jpg)
-
-![Reconstruction in High-Quality and Hi-Res](https://github.com/josemarroquintoledo/super-scanner-software-s3/blob/master/img/for-doc/EN_Hi-Res_fly-wing_flickr_wide_2304x685.jpg)
+![SuperScanner's Framework](img/for-doc/SS-framework_EN_1920x1358.png)
 
 Software Requirements
 ---------------------
@@ -45,25 +39,25 @@ After the installation of the requirements, (step **11th**) **download SuperScan
 
 ```
 $ cd ~
-$ git clone https://github.com/josemarroquintoledo/super-scanner-software-s3.git
-$ cd super-scanner-software-s3
+$ git clone https://github.com/josemarroquintoledo/superscanner-software-s3.git
+$ cd superscanner-software-s3
 $ jupyter notebook
 ```
 
 Folders' Description
 --------------------
 
-Within the main folder, **super-scanner-software-s3**:
+Within the main folder, **superscanner-software-s3**:
 
 - **[blend-meshes](blend-meshes/)**: it **contains printable parts and pieces** of SuperScanner Hardware (S2H), **the complete model** of the machine manipulable in Blender and **scenes that execute Blender scripts**.
 
 - **[examples](examples/)**: it is a folder with **sample Jupyter notebooks**.
 
-- **[jupyter-modules](jupyter-modules/)**: it contains **Python modules (libraries) written as Jupyter notebooks**. For example, this notebooks are used by the Fourier Ptychography algorithm and to access to the data and functions of Blender outside of it to simulate the picture taking process for photogrammetry, among others.
-
 - **[img](img/)**: it has **pictures** that are used by some notebooks.
 
-- **[stl](stl/)**: it contains the **meshes as STL files** used in the Blender files.
+- **[jupyter-modules](jupyter-modules/)**: it contains **Python modules (libraries) written as Jupyter notebooks**. For example, this notebooks are used by the Fourier Ptychography algorithm and to access to the data and functions of Blender outside of it to simulate the picture taking process for photogrammetry, among others.
+
+- **[scripts](scripts/)**: it contains **Python scripts** used to call the external software during the photogrammetry process, put the LEDs in the illuminator ring in the blend model of the machine (S2H), among others.
 
 Importing and Executing the Code
 --------------------------------
@@ -90,5 +84,3 @@ Zheng, G. Ou, X. Hortsmeyer, R. Chung, J. & Yang, Ch. (2014). Fourier Ptychograp
 Zheng, G. (2015). *Fourier Ptychographic Imaging: A MATLAB® tutorial*. San Rafael, CA: Morgan & Claypool Publishers.
 
 Dong, S. (2014). *Development of Gigapixel Microscopy*. Retrieved from http://digitalcommons.uconn.edu/gs_theses/687/
-
-> **Note:** the image set and the reconstructed image at the beginning were obtained with a simulated LED grid of 9 lamps over [BobMachines_microscopy-043--fly-wing_flickr_1024x685.tif](img/BobMachines_microscopy-043--fly-wing_flickr_1024x685.tif)
