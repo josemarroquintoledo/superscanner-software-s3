@@ -84,3 +84,5 @@ Zheng, G. Ou, X. Hortsmeyer, R. Chung, J. & Yang, Ch. (2014). Fourier Ptychograp
 Zheng, G. (2015). *Fourier Ptychographic Imaging: A MATLAB® tutorial*. San Rafael, CA: Morgan & Claypool Publishers.
 
 Dong, S. (2014). *Development of Gigapixel Microscopy*. Retrieved from http://digitalcommons.uconn.edu/gs_theses/687/
+
+Ou, X. Horstmeyer, R. Zheng, G. & Yang, Ch. (2015). High numerical aperture Fourier ptychography: principle, implementation and characterization. *Opt. Express, 23*, 3472-3491.
