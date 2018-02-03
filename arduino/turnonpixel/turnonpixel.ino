@@ -16,6 +16,9 @@
   Created on February 2nd, 2018
   by Jose David Marroquin Toledo
 
+  Modified on February 3rd, 2018
+  by Jose David Marroquin Toledo
+
   [1] https://github.com/josemarroquintoledo/superscanner-software-s3
   [2] https://github.com/adafruit/Adafruit_NeoPixel
 */
@@ -26,6 +29,7 @@
 #endif
 
 #define PIN 6
+#define NUM_OF_PIXELS 7
 
 struct pixel {
   int number = 0;
@@ -40,16 +44,18 @@ struct pixel {
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(7, PIN, NEO_GRBW + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_OF_PIXELS, PIN, NEO_GRBW + NEO_KHZ800);
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
 // and minimize distance between Arduino and first pixel.  Avoid connecting
 // on a live circuit...if you must, connect GND first.
 
+pixel pixelArr[NUM_OF_PIXELS];
 pixel lastPixel;
+int pixelArrPtr = 0;
 String line;
-int commaIdx;
+int commaIdx;  // Index number of the comma (',').
 
 void setup() {
   // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
@@ -72,17 +78,24 @@ void loop() {
     if (commaIdx != -1) {
       int firstNum = line.substring(0, commaIdx + 1).toInt();
       int secondNum = line.substring(commaIdx + 1).toInt();
-      if (firstNum > 0 && firstNum <= PIN + 1 && secondNum >= 0 && secondNum <= 255) {
+      if (firstNum > 0 && firstNum <= NUM_OF_PIXELS + 1 && secondNum >= 0 && secondNum <= 255) {
+        // firstNum (int) equals 0 is also the value for non-numeric strings.
         lastPixel.number = line.substring(0, commaIdx + 1).toInt();
-        lastPixel.number--;
+        lastPixel.number--;  // To correctly reference a Pixel in the strip.
         lastPixel.brightness = line.substring(commaIdx + 1).toInt();
+        pixelArr[pixelArrPtr] = lastPixel;
         colorWipe(lastPixel.number, strip.Color(0, 0, 0, lastPixel.brightness));
       }
     } else {
       if (line.compareTo("-1") == 0) {
         if (lastPixel.number > 0 && lastPixel.brightness > 0 ) {
-          // Turn off the last turned on LED.
+          // Turn off the last Pixel.
           colorWipe(lastPixel.number, strip.Color(0, 0, 0, 0)); 
+        }
+      } else if (line.compareTo("-2") == 0) {
+        // Turn off all pixels.
+        for (int i = 0; i < NUM_OF_PIXELS; i++) {
+          colorWipe(i, strip.Color(0, 0, 0, 0)); 
         }
       }
     }
