@@ -87,16 +87,16 @@ void loop() {
         colorWipe(lastPixel.number, strip.Color(0, 0, 0, lastPixel.brightness));
       }
     } else {
+      line.toLowerCase();
       if (line.compareTo("-1") == 0) {
         if (lastPixel.number > 0 && lastPixel.brightness > 0 ) {
           // Turn off the last Pixel.
           colorWipe(lastPixel.number, strip.Color(0, 0, 0, 0)); 
         }
       } else if (line.compareTo("-2") == 0) {
-        // Turn off all pixels.
-        for (int i = 0; i < NUM_OF_PIXELS; i++) {
-          colorWipe(i, strip.Color(0, 0, 0, 0)); 
-        }
+        turnOffAll();  // Turn off all Pixels.
+      } else if (line.compareTo("test") == 0) {
+        testPixels();
       }
     }
   }
@@ -106,4 +106,44 @@ void loop() {
 void colorWipe(uint16_t pixel, uint32_t color) {
   strip.setPixelColor(pixel, color);
   strip.show();
+}
+
+// Turns off all pixels (NUM_OF_PIXELS).
+void turnOffAll() {
+  for (int i = 0; i < NUM_OF_PIXELS; i++) {
+    colorWipe(i, strip.Color(0, 0, 0, 0));
+  }
+}
+
+// Launches a test routine for all Pixels (NUM_OF_PIXELS).
+void testPixels() {
+  turnOffAll();
+  delay(250);
+  // Turn on one Pixel at a time and maintains it.
+  for (int i = 0; i < NUM_OF_PIXELS; i++) {
+    colorWipe(i, strip.Color(0, 0, 0, 127));
+    delay(250);
+  }
+  // Turn off one Pixel at a time.
+  for (int i = NUM_OF_PIXELS - 1; i >= 0; i--) {
+    colorWipe(i, strip.Color(0, 0, 0, 0));
+    delay(250);
+  }
+  for (int k = 0; k < 3; k++) {
+    if (k % 2 != 0) {
+      // Decrease the brightness level from 255 to 0 of each Pixel.
+      for (int i = 255; i >= 0; i--) {
+        for (int j = NUM_OF_PIXELS - 1; j >=0; j--) {
+          colorWipe(j, strip.Color(0, 0, 0, i));
+        }
+      }    
+    } else {
+      // Increase the brightness level from 0 to 225 of each Pixel.
+      for (int i = 0; i < 256; i++) {
+        for (int j = 0; j < NUM_OF_PIXELS; j++) {
+          colorWipe(j, strip.Color(0, 0, 0, i));
+        }
+      }
+    }
+  }
 }
