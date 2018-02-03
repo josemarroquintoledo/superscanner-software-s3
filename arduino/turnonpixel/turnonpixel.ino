@@ -28,8 +28,8 @@
 #define PIN 6
 
 struct pixel {
-  int number;
-  int brightness;
+  int number = 0;
+  int brightness = 0;
 };
 
 // Parameter 1 = number of pixels in strip
@@ -47,7 +47,9 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(7, PIN, NEO_GRBW + NEO_KHZ800);
 // and minimize distance between Arduino and first pixel.  Avoid connecting
 // on a live circuit...if you must, connect GND first.
 
-pixel led;
+pixel lastPixel;
+String line;
+int commaIdx;
 
 void setup() {
   // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
@@ -63,24 +65,31 @@ void setup() {
 }
 
 void loop() {
-  // Waits for the pixel number
-  while (Serial.available() == 0) {
-  }
-  led.number = Serial.parseInt();
-  Serial.println(led.number);
-  // Waits for the pixel's brightness
-  while (Serial.available() == 0) {
-  }
-  led.brightness = Serial.parseInt();
-  Serial.println(led.brightness);
-  if (led.number <= PIN) {
-    if (led.brightness >= 0 && led.brightness <= 255) {
-      colorWipe(led.number, strip.Color(0, 0, 0, led.brightness));  // White color.
+  if (Serial.available() > 0) {
+    line = Serial.readString();
+    line.trim();
+    commaIdx = line.indexOf(',');
+    if (commaIdx != -1) {
+      int firstNum = line.substring(0, commaIdx + 1).toInt();
+      int secondNum = line.substring(commaIdx + 1).toInt();
+      if (firstNum > 0 && firstNum <= PIN + 1 && secondNum >= 0 && secondNum <= 255) {
+        lastPixel.number = line.substring(0, commaIdx + 1).toInt();
+        lastPixel.number--;
+        lastPixel.brightness = line.substring(commaIdx + 1).toInt();
+        colorWipe(lastPixel.number, strip.Color(0, 0, 0, lastPixel.brightness));
+      }
+    } else {
+      if (line.compareTo("-1") == 0) {
+        if (lastPixel.number > 0 && lastPixel.brightness > 0 ) {
+          // Turn off the last turned on LED.
+          colorWipe(lastPixel.number, strip.Color(0, 0, 0, 0)); 
+        }
+      }
     }
   }
 }
 
-// Turns on a pixel with a color
+// Turns on a pixel with a color.
 void colorWipe(uint16_t pixel, uint32_t color) {
   strip.setPixelColor(pixel, color);
   strip.show();
