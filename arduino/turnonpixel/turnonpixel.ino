@@ -29,7 +29,7 @@
 #endif
 
 #define PIN 6
-#define NUM_OF_PIXELS 7
+#define NUM_OF_PIXELS 47
 
 struct pixel {
   int number = 0;
@@ -53,7 +53,7 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_OF_PIXELS, PIN, NEO_GRBW + NEO_K
 
 pixel pixelArr[NUM_OF_PIXELS];
 pixel lastPixel;
-int pixelArrPtr = 0;
+int lastPixelPtr = -1;
 String line;
 int commaIdx;  // Index number of the comma (',').
 
@@ -83,20 +83,22 @@ void loop() {
         lastPixel.number = line.substring(0, commaIdx + 1).toInt();
         lastPixel.number--;  // To correctly reference a Pixel in the strip.
         lastPixel.brightness = line.substring(commaIdx + 1).toInt();
-        pixelArr[pixelArrPtr] = lastPixel;
+        lastPixelPtr++;
+        pixelArr[lastPixelPtr] = lastPixel;
         colorWipe(lastPixel.number, strip.Color(0, 0, 0, lastPixel.brightness));
       }
     } else {
       line.toLowerCase();
-      if (line.compareTo("-1") == 0) {
+      if (line.compareTo("pop") == 0 && lastPixelPtr >= 0) {
         if (lastPixel.number > 0 && lastPixel.brightness > 0 ) {
           // Turn off the last Pixel.
-          colorWipe(lastPixel.number, strip.Color(0, 0, 0, 0)); 
+          colorWipe(pixelArr[lastPixelPtr].number, strip.Color(0, 0, 0, 0));
+          lastPixelPtr--;
         }
-      } else if (line.compareTo("-2") == 0) {
+      } else if (line.compareTo("clean") == 0) {
         turnOffAll();  // Turn off all Pixels.
       } else if (line.compareTo("test") == 0) {
-        testPixels();
+        testPixels(31);
       }
     }
   }
@@ -116,12 +118,12 @@ void turnOffAll() {
 }
 
 // Launches a test routine for all Pixels (NUM_OF_PIXELS).
-void testPixels() {
+void testPixels(int brightness) {
   turnOffAll();
   delay(250);
   // Turn on one Pixel at a time and maintains it.
   for (int i = 0; i < NUM_OF_PIXELS; i++) {
-    colorWipe(i, strip.Color(0, 0, 0, 127));
+    colorWipe(i, strip.Color(0, 0, 0, brightness));
     delay(250);
   }
   // Turn off one Pixel at a time.
@@ -132,14 +134,14 @@ void testPixels() {
   for (int k = 0; k < 3; k++) {
     if (k % 2 != 0) {
       // Decrease the brightness level from 255 to 0 of each Pixel.
-      for (int i = 255; i >= 0; i--) {
-        for (int j = NUM_OF_PIXELS - 1; j >=0; j--) {
+      for (int i = brightness; i >= 0; i = i - 3) {
+        for (int j = NUM_OF_PIXELS - 1; j >= 0; j--) {
           colorWipe(j, strip.Color(0, 0, 0, i));
         }
       }    
     } else {
       // Increase the brightness level from 0 to 225 of each Pixel.
-      for (int i = 0; i < 256; i++) {
+      for (int i = 0; i < brightness + 1; i = i + 3) {
         for (int j = 0; j < NUM_OF_PIXELS; j++) {
           colorWipe(j, strip.Color(0, 0, 0, i));
         }
