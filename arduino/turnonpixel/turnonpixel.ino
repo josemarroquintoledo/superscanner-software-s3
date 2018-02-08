@@ -55,10 +55,7 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_OF_PIXELS, PIN, NEO_GRBW + NEO_K
 const int PIXEL_SEQ[] =  {1, 2, 3, 4, 5, 6, 7, 9, 8, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13,
                           12, 11, 10, 47, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
                           37, 38, 39, 40, 41, 42, 43, 44, 45, 46};
-
-pixel pixelArr[NUM_OF_PIXELS];
 pixel lastPixel;
-int lastPixelPtr = -1;
 String incomingSerialData;
 int commaIdx;  // Index number of the comma (',').
 //
@@ -91,17 +88,14 @@ void loop() {
         lastPixel.number = incomingSerialData.substring(0, commaIdx + 1).toInt();
         lastPixel.number--;  // To correctly reference a Pixel in the strip.
         lastPixel.brightness = incomingSerialData.substring(commaIdx + 1).toInt();
-        lastPixelPtr++;
-        pixelArr[lastPixelPtr] = lastPixel;
         colorWipe(lastPixel.number, lastPixel.brightness);
       }
     } else {
       incomingSerialData.toLowerCase();
-      if (incomingSerialData.compareTo("pop") == 0 && lastPixelPtr >= 0) {
+      if (incomingSerialData.compareTo("pop") == 0) {
         if (lastPixel.number > 0 && lastPixel.brightness > 0 ) {
           // Turn off the last Pixel.
-          colorWipe(pixelArr[lastPixelPtr].number, 0);
-          lastPixelPtr--;
+          colorWipe(lastPixel.number, 0);
         }
       } else if (incomingSerialData.compareTo("clear") == 0) {
         turnOffAll();  // Turn off all Pixels.
