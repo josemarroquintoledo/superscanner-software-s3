@@ -51,6 +51,11 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_OF_PIXELS, PIN, NEO_GRBW + NEO_K
 // and minimize distance between Arduino and first pixel.  Avoid connecting
 // on a live circuit...if you must, connect GND first.
 
+// Example of lighting sequence obtained with setLightingSequence() (int).
+const int PIXEL_SEQ[] =  {1, 2, 3, 4, 5, 6, 7, 9, 8, 23, 22, 21, 20, 19, 18, 17, 16, 15, 14, 13,
+                          12, 11, 10, 47, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
+                          37, 38, 39, 40, 41, 42, 43, 44, 45, 46};
+
 pixel pixelArr[NUM_OF_PIXELS];
 pixel lastPixel;
 int lastPixelPtr = -1;
@@ -67,11 +72,10 @@ void setup() {
   #endif
   // End of trinket special code
 
-
   strip.begin();
-  strip.show(); // Initialize all pixels to 'off'
+  strip.show();
   Serial.begin(9600);
-  initSequenceStack();
+  Serial.println("<ArduinoReady>");
 }
 
 void loop() {
@@ -89,14 +93,14 @@ void loop() {
         lastPixel.brightness = incomingSerialData.substring(commaIdx + 1).toInt();
         lastPixelPtr++;
         pixelArr[lastPixelPtr] = lastPixel;
-        colorWipe(lastPixel.number, strip.Color(0, 0, 0, lastPixel.brightness));
+        colorWipe(lastPixel.number, lastPixel.brightness);
       }
     } else {
       incomingSerialData.toLowerCase();
       if (incomingSerialData.compareTo("pop") == 0 && lastPixelPtr >= 0) {
         if (lastPixel.number > 0 && lastPixel.brightness > 0 ) {
           // Turn off the last Pixel.
-          colorWipe(pixelArr[lastPixelPtr].number, strip.Color(0, 0, 0, 0));
+          colorWipe(pixelArr[lastPixelPtr].number, 0);
           lastPixelPtr--;
         }
       } else if (incomingSerialData.compareTo("clear") == 0) {
@@ -116,6 +120,16 @@ void initSequenceStack() {
   }  
 }
 
+void turnOnSequence(int sequence[], int n) {
+  turnOffAll();
+  delay(150);
+  for (int i = 0; i < n; i++) {
+    Serial.println(i);
+    colorWipe(sequence[i] - 1, 31);
+    delay(150);
+  }
+}
+
 // Prints the lighting sequence set by the user.
 int setLightingSequence() {
   String incomingData;
@@ -123,7 +137,7 @@ int setLightingSequence() {
   int currentPixel = 0;
   int stackPtr = 0;  // 
   turnOffAll();
-  colorWipe(currentPixel, strip.Color(currentPixel, 0, 0, 31));  // Turn on the first Pixel.
+  colorWipe(currentPixel, 31);  // Turn on the first Pixel.
   while (true) {
     if (Serial.available() > 0) {
       incomingData = Serial.readString();
@@ -132,8 +146,8 @@ int setLightingSequence() {
       if (incomingData.compareTo("f") == 0 && currentPixel < NUM_OF_PIXELS - 1) {
         prevPixel = currentPixel;
         currentPixel++;  // Go to the next Pixel of the strip.
-        colorWipe(prevPixel, strip.Color(0, 0, 0, 0));  // Turn off the previous Pixel.
-        colorWipe(currentPixel, strip.Color(0, 0, 0, 31));  // Turn on the current Pixel.
+        colorWipe(prevPixel, 0);  // Turn off the previous Pixel.
+        colorWipe(currentPixel, 31);  // Turn on the current Pixel.
       } else if (incomingData.compareTo("jf") == 0) {
         prevPixel = currentPixel;
         currentPixel = currentPixel + 5;
@@ -141,13 +155,13 @@ int setLightingSequence() {
           // Go to the last Pixel of the strip.
           currentPixel = NUM_OF_PIXELS - 1;
         }
-        colorWipe(prevPixel, strip.Color(0, 0, 0, 0));  // Turn off the previous Pixel.
-        colorWipe(currentPixel, strip.Color(0, 0, 0, 31));  // Turn on the current Pixel.
+        colorWipe(prevPixel, 0);  // Turn off the previous Pixel.
+        colorWipe(currentPixel, 31);  // Turn on the current Pixel.
       } else if (incomingData.compareTo("p") == 0 && currentPixel > 0) {
         prevPixel = currentPixel;
         currentPixel--;  // Go to previous Pixel of the strip.
-        colorWipe(prevPixel, strip.Color(0, 0, 0, 0));  // Turn off the previous Pixel.
-        colorWipe(currentPixel, strip.Color(0, 0, 0, 31));  // Turn on the current Pixel.
+        colorWipe(prevPixel, 0);  // Turn off the previous Pixel.
+        colorWipe(currentPixel, 31);  // Turn on the current Pixel.
       } else if (incomingData.compareTo("jp") == 0) {
         prevPixel = currentPixel;
         currentPixel = currentPixel - 5;
@@ -155,8 +169,8 @@ int setLightingSequence() {
           // Go to the first Pixel of the strip.
           currentPixel = 0;
         }
-        colorWipe(prevPixel, strip.Color(0, 0, 0, 0));  // Turn off the previous Pixel.
-        colorWipe(currentPixel, strip.Color(0, 0, 0, 31));  // Turn on the current Pixel.
+        colorWipe(prevPixel, 0);  // Turn off the previous Pixel.
+        colorWipe(currentPixel, 31);  // Turn on the current Pixel.
       } else if (incomingData.compareTo("push") == 0) {
         // Give to the element referenced by stackPtr (int) in the sequenceStack array the value
         // of the position of the current Pixel.
@@ -183,17 +197,24 @@ void printLightingSeq() {
   Serial.print('{');
   for (int i = 0; i < NUM_OF_PIXELS; i++) {
     if (sequenceStack[i] != -1) {
+      if (i > 0) {
+        Serial.print(", ");
+      }
       Serial.print(sequenceStack[i]);
-      Serial.print(", "); 
     }
   }
   Serial.println('}');
 }
 
-// Turns on a pixel with a color.
-void colorWipe(uint16_t pixel, uint32_t color) {
-  strip.setPixelColor(pixel, color);
+// Turns on a Pixel with the white color or turns if off.
+void colorWipe(uint16_t pixel, int brightness) {
+  strip.setPixelColor(pixel, 0, 0, 0, brightness);
   strip.show();
+  if (brightness > 0) {
+    Serial.println("<Arduino-PixelOn-" + String(pixel + 1) + ">");
+  } else {
+    Serial.println("<Arduino-PixelOff-" + String(pixel + 1) + ">");
+  }
 }
 
 // Turns off all pixels (NUM_OF_PIXELS).
@@ -209,12 +230,12 @@ void testPixels(int brightness) {
   delay(200);
   // Turn on one Pixel at a time and maintains it.
   for (int i = 0; i < NUM_OF_PIXELS; i++) {
-    colorWipe(i, strip.Color(0, 0, 0, brightness));
+    colorWipe(i, brightness);
     delay(200);
   }
   // Turn off one Pixel at a time.
   for (int i = NUM_OF_PIXELS - 1; i >= 0; i--) {
-    colorWipe(i, strip.Color(0, 0, 0, 0));
+    colorWipe(i, 0);
     delay(200);
   }
   for (int k = 0; k < 3; k++) {
@@ -222,14 +243,14 @@ void testPixels(int brightness) {
       // Decrease the brightness level from brightness (int) to 0 of each Pixel.
       for (int i = brightness; i >= 0; i = i - 3) {
         for (int j = NUM_OF_PIXELS - 1; j >= 0; j--) {
-          colorWipe(j, strip.Color(0, 0, 0, i));
+          colorWipe(j, i);
         }
       }    
     } else {
       // Increase the brightness level from 0 to brightness (int) of each Pixel.
       for (int i = 0; i < brightness + 1; i = i + 3) {
         for (int j = 0; j < NUM_OF_PIXELS; j++) {
-          colorWipe(j, strip.Color(0, 0, 0, i));
+          colorWipe(j, i);
         }
       }
     }
