@@ -16,7 +16,7 @@
   Created on February 2nd, 2018
   by Jose David Marroquin Toledo
 
-  Modified on February 3rd, 2018
+  Modified on February 7th, 2018
   by Jose David Marroquin Toledo
 
   [1] https://github.com/josemarroquintoledo/superscanner-software-s3
@@ -92,12 +92,7 @@ void loop() {
       }
     } else {
       incomingSerialData.toLowerCase();
-      if (incomingSerialData.compareTo("pop") == 0) {
-        if (lastPixel.number > 0 && lastPixel.brightness > 0 ) {
-          // Turn off the last Pixel.
-          colorWipe(lastPixel.number, 0);
-        }
-      } else if (incomingSerialData.compareTo("clear") == 0) {
+      if (incomingSerialData.compareTo("clear") == 0) {
         turnOffAll();  // Turn off all Pixels.
       } else if (incomingSerialData.compareTo("test") == 0) {
         testPixels(31);
@@ -202,7 +197,7 @@ void printLightingSeq() {
 
 // Turns on a Pixel with the white color or turns if off.
 void colorWipe(uint16_t pixel, int brightness) {
-  strip.setPixelColor(pixel, 0, 0, 0, brightness);
+  strip.setPixelColor(PIXEL_SEQ[pixel] - 1, 0, 0, 0, brightness);
   strip.show();
   if (brightness > 0) {
     Serial.println("<Arduino-PixelOn-" + String(pixel + 1) + ">");
