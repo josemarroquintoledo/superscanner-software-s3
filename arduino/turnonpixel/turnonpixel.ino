@@ -29,7 +29,7 @@
 #endif
 
 #define PIN 6
-#define NUM_OF_PIXELS 47
+#define MAX_NUM_OF_PIXELS 47
 
 struct pixel {
   int number = 0;
@@ -44,7 +44,7 @@ struct pixel {
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_OF_PIXELS, PIN, NEO_GRBW + NEO_KHZ800);
+Adafruit_NeoPixel strip = Adafruit_NeoPixel(MAX_NUM_OF_PIXELS, PIN, NEO_GRBW + NEO_KHZ800);
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
@@ -52,14 +52,14 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_OF_PIXELS, PIN, NEO_GRBW + NEO_K
 // on a live circuit...if you must, connect GND first.
 
 // Example of lighting sequence obtained with setLightingSequence() (int).
-const int PIXEL_SEQ[NUM_OF_PIXELS] =  {1, 2, 3, 4, 5, 6, 7, 9, 8, 23, 22, 21, 20, 19, 18, 17, 16,
+const int PIXEL_SEQ[MAX_NUM_OF_PIXELS] =  {1, 2, 3, 4, 5, 6, 7, 9, 8, 23, 22, 21, 20, 19, 18, 17, 16,
                                        15, 14, 13, 12, 11, 10, 47, 24, 25, 26, 27, 28, 29, 30, 31,
                                        32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46};
 pixel lastPixel;
 String incomingSerialData;
 int commaIdx;  // Index number of the comma (',').
 //
-int sequenceStack[NUM_OF_PIXELS];
+int sequenceStack[MAX_NUM_OF_PIXELS];
 int pixelNumber = 0;
 
 void setup() {
@@ -83,7 +83,7 @@ void loop() {
     if (commaIdx != -1) {
       int firstNum = incomingSerialData.substring(0, commaIdx + 1).toInt();
       int secondNum = incomingSerialData.substring(commaIdx + 1).toInt();
-      if (firstNum > 0 && firstNum <= NUM_OF_PIXELS + 1 && secondNum >= 0 && secondNum <= 255) {
+      if (firstNum > 0 && firstNum <= MAX_NUM_OF_PIXELS + 1 && secondNum >= 0 && secondNum <= 255) {
         // firstNum (int) equals 0 is also the value for non-numeric strings.
         lastPixel.number = incomingSerialData.substring(0, commaIdx + 1).toInt();
         lastPixel.number--;  // To correctly reference a Pixel in the strip.
@@ -104,7 +104,7 @@ void loop() {
 }
 
 void initSequenceStack() {
-  for (int i = 0; i < NUM_OF_PIXELS; i++) {
+  for (int i = 0; i < MAX_NUM_OF_PIXELS; i++) {
     sequenceStack[i] = -1;
   }  
 }
@@ -132,10 +132,12 @@ void showSequence(int n, int brightnessPixel) {
   colorWipe(n, brightnessPixel);
 }
 
-// Prints the lighting sequence set by the user.
+// Prints the lighting sequence set by the user. Commands: f ("forward") to go to the next Pixel,
+// b ("backward") to go to the previous Pixel, jf ("jump forward") to go JUMP_STEPS (int) forward,
+// jb ("jump backward") to go JUMP_STEPS (int) backward and q ("quit") to exit.
 int setLightingSequence() {
   const int BRIGHTNESS_LEVEL = 31;
-  const int JUMP_STEPS = 5;
+  const int JUMPS = 5;
   String incomingData;
   int prevPixel;
   Serial.println("<StripSetSequence>");
@@ -149,7 +151,7 @@ int setLightingSequence() {
       incomingData = Serial.readString();
       incomingData.trim();
       incomingData.toLowerCase();
-      if (incomingData.compareTo("f") == 0 && currentPixel < NUM_OF_PIXELS - 1) {
+      if (incomingData.compareTo("f") == 0 && currentPixel < MAX_NUM_OF_PIXELS - 1) {
         Serial.println("<StripForward>");
         prevPixel = currentPixel;
         currentPixel++;  // Go to the next Pixel of the strip.
@@ -159,9 +161,9 @@ int setLightingSequence() {
         Serial.println("<StripJumpForward-" + String(JUMP_STEPS) + '>');
         prevPixel = currentPixel;
         currentPixel = currentPixel + JUMP_STEPS;
-        if (currentPixel >= NUM_OF_PIXELS - 1) {
+        if (currentPixel >= MAX_NUM_OF_PIXELS - 1) {
           // Go to the last Pixel of the strip.
-          currentPixel = NUM_OF_PIXELS - 1;
+          currentPixel = MAX_NUM_OF_PIXELS - 1;
         }
         colorWipe(prevPixel, 0);  // Turn off the previous Pixel.
         colorWipe(currentPixel, BRIGHTNESS_LEVEL);  // Turn on the current Pixel.
@@ -182,15 +184,23 @@ int setLightingSequence() {
         colorWipe(prevPixel, 0);  // Turn off the previous Pixel.
         colorWipe(currentPixel, BRIGHTNESS_LEVEL);  // Turn on the current Pixel.
       } else if (incomingData.compareTo("push") == 0) {
-        if (currentPixel + 1 != sequenceStack[stackPtr - 1]) {
+        boolean inSeq = false;
+        // Look for the current Pixel in the sequence to add it only if it does not exist.
+        for (int i = 0; i < stackPtr - 1; i++) {
+          if (sequenceStack[i] == currentPixel + 1) {
+            inSeq = true;
+            break;
+          }
+        }
+        if (!inSeq) {
           Serial.println("<SequencePixelPush-" + String(currentPixel + 1) + ">");
           // Give to the element referenced by stackPtr (int) in the sequenceStack array the value
           // of the position of the current Pixel.
           sequenceStack[stackPtr] = currentPixel + 1;  // The Pixels are numbered from 0 to
-                                                       // NUM_OF_PIXELS.
+                                                       // MAX_NUM_OF_PIXELS.
           stackPtr++;
           printLightingSeq(); 
-        }
+        }          
       } else if (incomingData.compareTo("pop") == 0) {
         Serial.println("<SequencePop>");
         // Clear the value of the element referenced by stackPtr (int) in the sequenceStack array.
@@ -212,7 +222,7 @@ int setLightingSequence() {
 // Prints the lighting sequence as array to copy and paste in an Arduino code.
 void printLightingSeq() {
   Serial.print('{');
-  for (int i = 0; i < NUM_OF_PIXELS; i++) {
+  for (int i = 0; i < MAX_NUM_OF_PIXELS; i++) {
     if (sequenceStack[i] != -1) {
       if (i > 0) {
         Serial.print(", ");
@@ -234,14 +244,14 @@ void colorWipe(uint16_t pixel, int brightness) {
   }
 }
 
-// Turns off all pixels (NUM_OF_PIXELS).
+// Turns off all pixels (MAX_NUM_OF_PIXELS).
 void turnOffAll() {
-  for (int i = 0; i < NUM_OF_PIXELS; i++) {
+  for (int i = 0; i < MAX_NUM_OF_PIXELS; i++) {
     colorWipe(i, strip.Color(0, 0, 0, 0));
   }
 }
 
-// Launches a test routine for all Pixels (NUM_OF_PIXELS).
+// Launches a test routine for all Pixels (MAX_NUM_OF_PIXELS).
 void testPixels() {
   const int DELAY_TIME = 150;  // In miliseconds.
   const int BRIGHTNESS_LEVEL = 31;
@@ -249,12 +259,12 @@ void testPixels() {
   delay(DELAY_TIME);
   Serial.println("<PixelsTest>");
   // Turn on one Pixel at a time and maintains it.
-  for (int i = 0; i < NUM_OF_PIXELS; i++) {
+  for (int i = 0; i < MAX_NUM_OF_PIXELS; i++) {
     colorWipe(i, BRIGHTNESS_LEVEL);
     delay(DELAY_TIME);
   }
   // Turn off one Pixel at a time.
-  for (int i = NUM_OF_PIXELS - 1; i >= 0; i--) {
+  for (int i = MAX_NUM_OF_PIXELS - 1; i >= 0; i--) {
     colorWipe(i, 0);
     delay(DELAY_TIME);
   }
@@ -262,14 +272,14 @@ void testPixels() {
     if (k % 2 != 0) {
       // Decrease the brightness level from brightness (int) to 0 of each Pixel.
       for (int i = BRIGHTNESS_LEVEL; i >= 0; i = i - 3) {
-        for (int j = NUM_OF_PIXELS - 1; j >= 0; j--) {
+        for (int j = MAX_NUM_OF_PIXELS - 1; j >= 0; j--) {
           colorWipe(j, i);
         }
       }    
     } else {
       // Increase the brightness level from 0 to brightness (int) of each Pixel.
       for (int i = 0; i < BRIGHTNESS_LEVEL + 1; i = i + 3) {
-        for (int j = 0; j < NUM_OF_PIXELS; j++) {
+        for (int j = 0; j < MAX_NUM_OF_PIXELS; j++) {
           colorWipe(j, i);
         }
       }
