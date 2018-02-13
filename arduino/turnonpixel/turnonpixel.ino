@@ -62,6 +62,7 @@ int commaIdx;  // Index number of the comma (',') in the main loop.
 //
 int sequenceStack[MAX_NUM_OF_PIXELS];
 
+
 void setup() {
   // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
   #if defined (__AVR_ATtiny85__)
@@ -137,7 +138,7 @@ void showSequence(int n, int brightnessPixel) {
 // jb ("jump backward") to go JUMP_STEPS (int) backward and q ("quit") to exit.
 int setLightingSequence() {
   const int BRIGHTNESS_LEVEL = 31;
-  const int JUMPS = 5;
+  const int JUMP_STEPS = 5;
   String incomingData;
   int prevPixel;
   Serial.println("<StripSetSequence>");
