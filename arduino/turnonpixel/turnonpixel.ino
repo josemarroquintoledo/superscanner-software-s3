@@ -1,26 +1,22 @@
 /*
   Turning On a NeoPixel's Pixel
 
-  This sketch is used to turn or or off one LED of a NeoPixel
-  ring or grid at a time. It is part of the SuperScanner
-  project (GPL-2.0) [1].
-  
-  The LED ring or grid plays the rol of illuminating the
-  sample observed with a microscope in the way that is
-  required by the computational imaging technique Fouerier
-  Ptychography.
+  This sketch is used to turn on or off Pixels, test them or set a lighting sequence of NeoPixel
+  [1] strips or rings.
 
-  Some code block was taken from the strandtest example sketch
-  by Adafruit (LGPL-3.0) [2].
+  SuperScanner project (GPL-2.0) [2] uses this sketch to light up a sample under a microscope with
+  one NeoPixel at a time according to the computational imaging technique Fourier Ptychography.
 
   Created on February 2nd, 2018
   by Jose David Marroquin Toledo
 
-  Modified on February 7th, 2018
+  Modified on February 12th, 2018
   by Jose David Marroquin Toledo
 
-  [1] https://github.com/josemarroquintoledo/superscanner-software-s3
-  [2] https://github.com/adafruit/Adafruit_NeoPixel
+  [1] https://github.com/adafruit/Adafruit_NeoPixel
+
+  [2] https://github.com/josemarroquintoledo/superscanner-software-s3
+  
 */
 
 #include <Adafruit_NeoPixel.h>
@@ -32,10 +28,12 @@
 #define MAX_NUM_OF_PIXELS 47
 
 struct pixel {
-  int number = 0;
+  int number = -1;
   int brightness = 0;
 };
 
+// From the strandtest example sketch (LGPL-3.0) by Adafruit
+//
 // Parameter 1 = number of pixels in strip
 // Parameter 2 = Arduino pin number (most are valid)
 // Parameter 3 = pixel type flags, add together as needed:
@@ -50,17 +48,19 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(MAX_NUM_OF_PIXELS, PIN, NEO_GRBW + N
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
 // and minimize distance between Arduino and first pixel.  Avoid connecting
 // on a live circuit...if you must, connect GND first.
+//
 
-// Example of lighting sequence obtained with setLightingSequence() (int).
-const int PIXEL_SEQ[MAX_NUM_OF_PIXELS] =  {1, 2, 3, 4, 5, 6, 7, 9, 8, 23, 22, 21, 20, 19, 18, 17, 16,
-                                       15, 14, 13, 12, 11, 10, 47, 24, 25, 26, 27, 28, 29, 30, 31,
-                                       32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46};
+// Custom lighting sequence obtained with setLightingSequence() (int).
+const int PIXEL_SEQ[MAX_NUM_OF_PIXELS] =  {1, 2, 3, 4, 5, 6, 7, 9, 8, 23, 22, 21, 20, 19, 18, 17,
+                                           16, 15, 14, 13, 12, 11, 10, 47, 24, 25, 26, 27, 28, 29,
+                                           30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43,
+                                           44, 45, 46};
+
 pixel lastPixel;
 String incomingSerialData;
-int commaIdx;  // Index number of the comma (',').
+int commaIdx;  // Index number of the comma (',') in the main loop.
 //
 int sequenceStack[MAX_NUM_OF_PIXELS];
-int pixelNumber = 0;
 
 void setup() {
   // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
@@ -233,7 +233,9 @@ void printLightingSeq() {
   Serial.println('}');
 }
 
-// Turns on a Pixel with the white color or turns if off.
+// Turns on a Pixel with the white color or turns it off.
+//
+// pixel (uint16_t) is the index of the custom lighting sequence PIXEL_SEQ[] (const int).
 void colorWipe(uint16_t pixel, int brightness) {
   strip.setPixelColor(PIXEL_SEQ[pixel] - 1, 0, 0, 0, brightness);
   strip.show();
