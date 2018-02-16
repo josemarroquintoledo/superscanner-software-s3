@@ -258,17 +258,17 @@ void turnAllOff() {
 void testPixels() {
   const int DELAY_TIME = 150;  // In miliseconds.
   const int BRIGHTNESS_LEVEL = 31;
+  Serial.println("<StripTestStart>");
   turnAllOff();
   delay(DELAY_TIME);
-  Serial.println("<PixelsTest>");
   // Turn one Pixel on at a time and maintains it.
   for (int i = 0; i < MAX_NUM_OF_PIXELS; i++) {
-    colorWipe(i, BRIGHTNESS_LEVEL);
+    colorWipe(PIXEL_SEQ[i], BRIGHTNESS_LEVEL);
     delay(DELAY_TIME);
   }
   // Turn one Pixel off at a time.
   for (int i = MAX_NUM_OF_PIXELS - 1; i >= 0; i--) {
-    colorWipe(i, 0);
+    colorWipe(PIXEL_SEQ[i], 0);
     delay(DELAY_TIME);
   }
   for (int k = 0; k < 3; k++) {
@@ -276,16 +276,17 @@ void testPixels() {
       // Decrease the brightness level from brightness (int) to 0 of each Pixel.
       for (int i = BRIGHTNESS_LEVEL; i >= 0; i = i - 3) {
         for (int j = MAX_NUM_OF_PIXELS - 1; j >= 0; j--) {
-          colorWipe(j, i);
+          colorWipe(PIXEL_SEQ[j], i);
         }
       }    
     } else {
       // Increase the brightness level from 0 to brightness (int) of each Pixel.
       for (int i = 0; i < BRIGHTNESS_LEVEL + 1; i = i + 3) {
         for (int j = 0; j < MAX_NUM_OF_PIXELS; j++) {
-          colorWipe(j, i);
+          colorWipe(PIXEL_SEQ[j], i);
         }
       }
     }
   }
+  Serial.println("<StripTestEnd>");
 }
