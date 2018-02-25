@@ -64,9 +64,7 @@ Importing and Executing the Code
 
 ### In Jupyter
 
-> **Note:** after the installation of [Anaconda3](https://www.continuum.io/downloads), navigate to [autostart](jupyter-modules/autostart) (jupyter-modules&rarr;autostart) and follow the instructions of the notebooks there.
-
-Within of the [examples](examples/) folder, there are **sample notebooks** such as [fp-examples.ipynb](examples/fp-examples.ipynb)
+Executing `%run <notebook module>` within a cell, can call functions of the notebook module.
 
 In any notebook, a cell is executed from **Cells**&rarr;**Run Cell** or with <kbd>Shift</kbd> &#43; <kbd>Enter</kbd>.
 
