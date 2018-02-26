@@ -50,17 +50,16 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(MAX_NUM_OF_PIXELS, PIN, NEO_GRBW + N
 //
 
 // Custom lighting sequence obtained with setLightingSequence() (int).
-const int PIXEL_SEQ[MAX_NUM_OF_PIXELS] =  {1, 2, 3, 4, 5, 6, 7, 21, 20, 19, 18, 17, 16, 15, 14, 13,
-                                           12, 11, 10, 9, 8, 23, 22, 40, 41, 42, 43, 44, 45, 46,
-                                           47, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
-                                           37, 38, 39};
+const int PIXEL_SEQ[MAX_NUM_OF_PIXELS] =  {1, 2, 3, 4, 5, 6, 7, 18, 17, 16, 15, 14, 13, 12, 11, 10,
+                                           9, 8, 23, 22, 21, 20, 19, 46, 47, 24, 25, 26, 27, 28,
+                                           29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
+                                           43, 44, 45};
 
 pixel lastPixel;
 String incomingSerialData;
 int commaIdx;  // Index number of the comma (',') in the main loop.
 //
 int sequenceStack[MAX_NUM_OF_PIXELS];
-
 
 void setup() {
   // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
