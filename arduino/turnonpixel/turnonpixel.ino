@@ -58,6 +58,7 @@ const int PIXEL_SEQ[MAX_NUM_OF_PIXELS] =  {1, 2, 3, 4, 5, 6, 7, 18, 17, 16, 15, 
 pixel lastPixel;
 String incomingSerialData;
 int commaIdx;  // Index number of the comma (',') in the main loop.
+bool useCustomSeq = false; 
 //
 int sequenceStack[MAX_NUM_OF_PIXELS];
 
@@ -86,16 +87,34 @@ void loop() {
         // firstNum (int) equals 0 is also the value for non-numeric strings.
         lastPixel.number = incomingSerialData.substring(0, commaIdx + 1).toInt();
         lastPixel.brightness = incomingSerialData.substring(commaIdx + 1).toInt();
-        colorWipe(lastPixel.number, lastPixel.brightness);
+        if (useCustomSeq) {
+          colorWipe(PIXEL_SEQ[lastPixel.number - 1], lastPixel.brightness);
+        } else {
+          colorWipe(lastPixel.number, lastPixel.brightness);
+        }
       }
     } else {
       incomingSerialData.toLowerCase();
-      if (incomingSerialData.compareTo("clear") == 0) {
+      if (incomingSerialData.compareTo("useseq") == 0 && !useCustomSeq) {
+        Serial.println("<CustomSeqUse>");
+        useCustomSeq = true;
+      } if (incomingSerialData.compareTo("noseq") == 0 && useCustomSeq) {
+        Serial.println("<CustomSeqNo>");
+        useCustomSeq = false;
+      } else if (incomingSerialData.compareTo("clear") == 0) {
         turnAllOff();  // Turn all Pixels off.
       } else if (incomingSerialData.compareTo("test") == 0) {
-        // It is recommended to set a lighting sequence before.
+        // It uses the custom lighting sequence PIXEL_SEQ[] (const int).
+        if (!useCustomSeq) {
+          Serial.println("<CustomSeqUse>");
+          useCustomSeq = true;
+        }
         testPixels();
       } else if (incomingSerialData.compareTo("setseq") == 0) {
+        if (useCustomSeq) {
+          Serial.println("<CustomSeqNo>");
+          useCustomSeq = false;
+        }
         setLightingSequence(); 
       }
     }
@@ -136,7 +155,7 @@ int setLightingSequence() {
   int stackPtr = -1;
   String incomingData;
   int prevPixel;
-  boolean inSeq;
+  bool inSeq;
   Serial.println("<StripSetSequence>");
   initSequenceStack();
   turnAllOff();
