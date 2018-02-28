@@ -50,17 +50,17 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(MAX_NUM_OF_PIXELS, PIN, NEO_GRBW + N
 //
 
 // Custom lighting sequence obtained with setLightingSequence() (int).
-const int PIXEL_SEQ[MAX_NUM_OF_PIXELS] =  {1, 2, 3, 4, 5, 6, 7, 21, 20, 19, 18, 17, 16, 15, 14, 13,
-                                           12, 11, 10, 9, 8, 23, 22, 40, 41, 42, 43, 44, 45, 46,
-                                           47, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36,
-                                           37, 38, 39};
+const int PIXEL_SEQ[MAX_NUM_OF_PIXELS] =  {1, 2, 3, 4, 5, 6, 7, 18, 17, 16, 15, 14, 13, 12, 11, 10,
+                                           9, 8, 23, 22, 21, 20, 19, 46, 47, 24, 25, 26, 27, 28,
+                                           29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
+                                           43, 44, 45};
 
 pixel lastPixel;
 String incomingSerialData;
 int commaIdx;  // Index number of the comma (',') in the main loop.
+bool useCustomSeq = false; 
 //
 int sequenceStack[MAX_NUM_OF_PIXELS];
-
 
 void setup() {
   // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
@@ -87,16 +87,34 @@ void loop() {
         // firstNum (int) equals 0 is also the value for non-numeric strings.
         lastPixel.number = incomingSerialData.substring(0, commaIdx + 1).toInt();
         lastPixel.brightness = incomingSerialData.substring(commaIdx + 1).toInt();
-        colorWipe(lastPixel.number, lastPixel.brightness);
+        if (useCustomSeq) {
+          colorWipe(PIXEL_SEQ[lastPixel.number - 1], lastPixel.brightness);
+        } else {
+          colorWipe(lastPixel.number, lastPixel.brightness);
+        }
       }
     } else {
       incomingSerialData.toLowerCase();
-      if (incomingSerialData.compareTo("clear") == 0) {
+      if (incomingSerialData.compareTo("useseq") == 0 && !useCustomSeq) {
+        Serial.println("<CustomSeqUse>");
+        useCustomSeq = true;
+      } if (incomingSerialData.compareTo("noseq") == 0 && useCustomSeq) {
+        Serial.println("<CustomSeqNo>");
+        useCustomSeq = false;
+      } else if (incomingSerialData.compareTo("clear") == 0) {
         turnAllOff();  // Turn all Pixels off.
       } else if (incomingSerialData.compareTo("test") == 0) {
-        // It is recommended to set a lighting sequence before.
+        // It uses the custom lighting sequence PIXEL_SEQ[] (const int).
+        if (!useCustomSeq) {
+          Serial.println("<CustomSeqUse>");
+          useCustomSeq = true;
+        }
         testPixels();
       } else if (incomingSerialData.compareTo("setseq") == 0) {
+        if (useCustomSeq) {
+          Serial.println("<CustomSeqNo>");
+          useCustomSeq = false;
+        }
         setLightingSequence(); 
       }
     }
@@ -137,7 +155,7 @@ int setLightingSequence() {
   int stackPtr = -1;
   String incomingData;
   int prevPixel;
-  boolean inSeq;
+  bool inSeq;
   Serial.println("<StripSetSequence>");
   initSequenceStack();
   turnAllOff();
