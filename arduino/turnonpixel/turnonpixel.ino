@@ -1,17 +1,19 @@
 /*
   Turning a NeoPixel's Pixel On.
 
-  This sketch is used to turn Pixels on or off, test them or set a lighting sequence of NeoPixel
-  [1] strips or rings.
+  This sketch is used to turn Pixels on or off, test them or set a custom lighting sequence of
+  NeoPixel [1] strips, rings or jewel.
 
-  SuperScanner project (GPL-2.0) [2] uses this sketch to light up a sample under a microscope with
-  one NeoPixel at a time according to the computational imaging technique Fourier Ptychography.
+  SuperScanner project (GPL-2.0) [2] uses this sketch to light up a sample under a microscope
+  (microscopx) with one NeoPixel at a time according to the computational imaging technique
+  Fourier Ptychography.
 
   Created on February 2nd, 2018
   by Jose David Marroquin Toledo
 
-  Modified on February 16th, 2018
+  Modified on March 8th, 2018
   by Jose David Marroquin Toledo
+  
   [1] https://github.com/adafruit/Adafruit_NeoPixel
 
   [2] https://github.com/josemarroquintoledo/superscanner-software-s3
@@ -88,8 +90,10 @@ void loop() {
         lastPixel.number = incomingSerialData.substring(0, commaIdx + 1).toInt();
         lastPixel.brightness = incomingSerialData.substring(commaIdx + 1).toInt();
         if (useCustomSeq) {
+          // Turn a Pixel on or off using the custom lighting sequence (const int PIXEL_SEQ[]).
           colorWipe(PIXEL_SEQ[lastPixel.number - 1], lastPixel.brightness);
         } else {
+          // Turn a Pixel on or off using the real lighting sequence.
           colorWipe(lastPixel.number, lastPixel.brightness);
         }
       }
@@ -127,8 +131,8 @@ void initSequenceStack() {
   }  
 }
 
-// Gives a preview of the lighting sequence.
-void showSequence(int currentPixelIdx, int currentPixelBrightness) {
+// Gives a preview of the custome lighting sequence.
+void showSequence(int currentPixelIdx) {
   const int BRIGHTNESS_LEVEL = 31;
   const int DELAY_TIME = 300;
   Serial.println("<SequencePreviewStart>");
@@ -145,9 +149,15 @@ void showSequence(int currentPixelIdx, int currentPixelBrightness) {
   printLightingSeq();
 }
 
-// Prints the lighting sequence set by the user. Commands: f ("forward") to go to the next Pixel,
-// b ("backward") to go to the previous Pixel, jf ("jump forward") to go JUMP_STEPS (int) forward,
-// jb ("jump backward") to go JUMP_STEPS (int) backward and q ("quit") to exit.
+// Creates and print a custom lighting sequence that can be used to replace the value of PIXEL_SEQ
+// (const int[]).
+//
+// After the calling of the function, can be written in the serial port: f ("forward") to turn the
+// next Pixel on and off the current one, b ("backward") to turn the current one off and turn the
+// previous one on, jf ("jump forward") to go JUMP_STEPS (int) steps forward, jb ("jump backward")
+// to go JUMP_STEPS (int) steps backward, push to add a item (Pixel's index in the real sequence)
+// to end of the list (int sequenceStack[]), pop to remove it and q ("quit") to finish the
+// function's execution.
 int setLightingSequence() {
   const int BRIGHTNESS_LEVEL = 31;
   const int JUMP_STEPS = 5;
@@ -208,8 +218,6 @@ int setLightingSequence() {
         }
         if (!inSeq) {
           Serial.println("<SequencePixelPush-" + String(currentPixel) + ">");
-          // Give to the element referenced by stackPtr (int) in the sequenceStack array the value
-          // of the position of the current Pixel.
           stackPtr++;
           sequenceStack[stackPtr] = currentPixel;
           printLightingSeq(); 
@@ -222,7 +230,7 @@ int setLightingSequence() {
         printLightingSeq();
       } else if (incomingData.compareTo("show") == 0) {
         colorWipe(currentPixel, 0);  // Turn the current Pixel off.
-        showSequence(stackPtr, BRIGHTNESS_LEVEL);
+        showSequence(stackPtr);
         colorWipe(currentPixel, BRIGHTNESS_LEVEL);  // Turn the current Pixel on again.
       } else if (incomingData.compareTo("print") == 0) {
         printLightingSeq();
@@ -236,7 +244,7 @@ int setLightingSequence() {
   }
 }
 
-// Prints the lighting sequence as array to copy and paste in an Arduino code.
+// Prints the custom lighting sequence.
 void printLightingSeq() {
   Serial.print('{');
   for (int i = 0; i < MAX_NUM_OF_PIXELS; i++) {
