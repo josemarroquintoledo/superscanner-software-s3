@@ -28,12 +28,6 @@
 #define PIN 6
 #define MAX_NUM_OF_PIXELS 47
 
-struct pixel {
-  int number = -1;
-  int brightness = 0;
-  String color = "w";
-};
-
 // From the strandtest example sketch (LGPL-3.0) by Adafruit
 //
 // Parameter 1 = number of pixels in strip
@@ -53,12 +47,11 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(MAX_NUM_OF_PIXELS, PIN, NEO_RGBW + N
 //
 
 // Custom lighting sequence obtained with setLightingSequence() (int).
-const int PIXEL_SEQ[MAX_NUM_OF_PIXELS] =  {1, 2, 3, 4, 5, 6, 7, 18, 17, 16, 15, 14, 13, 12, 11, 10,
-                                           9, 8, 23, 22, 21, 20, 19, 46, 47, 24, 25, 26, 27, 28,
-                                           29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42,
-                                           43, 44, 45};
+const int PIXEL_SEQ[MAX_NUM_OF_PIXELS] =  {1, 2, 3, 4, 5, 6, 7, 18, 17, 16, 15, 14, 13, 12, 11,
+                                           10, 9, 8, 23, 22, 21, 20, 19, 46, 47, 24, 25, 26, 27,
+                                           28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41,
+                                           42, 43, 44, 45};
 
-pixel lastPixel;
 String incomingSerialData;
 int firstCommaIdx;  // Index number of the comma (',') in the main loop.
 int secondCommaIdx;
@@ -67,10 +60,10 @@ bool useCustomSeq = false;
 int sequenceStack[MAX_NUM_OF_PIXELS];
 
 void setup() {
-  // This is for Trinket 5V 16MHz, you can remove these three lines if you are not using a Trinket
-  #if defined (__AVR_ATtiny85__)
-    if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
-  #endif
+  // This is for Trinket 5V 16MHz, you can add these three lines if you are using a Trinket
+  // #if defined (__AVR_ATtiny85__)
+  //   if (F_CPU == 16000000) clock_prescale_set(clock_div_1);
+  // #endif
   // End of trinket special code
 
   strip.begin();
@@ -89,20 +82,19 @@ void loop() {
     secondCommaIdx = incomingSerialData.indexOf(',', firstCommaIdx + 2);
     if (firstCommaIdx != -1 && secondCommaIdx != -1) {
       int pixel = incomingSerialData.substring(0, firstCommaIdx + 1).toInt();
-      int brt = incomingSerialData.substring(firstCommaIdx + 1, secondCommaIdx).toInt();
-      String color = incomingSerialData.substring(secondCommaIdx + 1);
-      if (pixel > 0 && pixel <= MAX_NUM_OF_PIXELS && brt >= 0 && brt <= 255
-          && (color.compareTo("r") == 0 || color.compareTo("g") == 0
-              || color.compareTo("b") == 0 || color.compareTo("w") == 0)) {
-        // The first Pixel is 1 not 0.
-        lastPixel.number = pixel;
-        lastPixel.color = color;
+      uint8_t brightness = incomingSerialData.substring(firstCommaIdx + 1, secondCommaIdx).toInt();
+      String mode = incomingSerialData.substring(secondCommaIdx + 1);
+      if (pixel > 0 && pixel <= MAX_NUM_OF_PIXELS && brightness >= 0 && brightness <= 255
+          && (mode.compareTo("r") == 0 || mode.compareTo("g") == 0
+          || mode.compareTo("b") == 0 || mode.compareTo("w") == 0)
+          || mode.compareTo("rgb") || mode.compareTo("bgr")) {
         if (useCustomSeq) {
           // Turn a Pixel on or off using the custom lighting sequence (const int PIXEL_SEQ[]).
-          colorWipe(PIXEL_SEQ[lastPixel.number - 1], brt, lastPixel.color);
+          // The first Pixel is 1 not 0.
+          colorWipe(PIXEL_SEQ[pixel - 1], brightness, mode);
         } else {
           // Turn a Pixel on or off using the real lighting sequence.
-          colorWipe(lastPixel.number, brt, lastPixel.color);
+          colorWipe(pixel, brightness, mode);
         }
       }
     } else {
@@ -267,26 +259,30 @@ void printLightingSeq() {
   Serial.println('}');
 }
 
-// Sets a Pixel to a red, green, blue or white color. If brightness (int) is 0, the Pixel will be
-// turned off.
+// Sets a Pixel to a color. If brightness (int) is 0, the Pixel will be turned off.
 //
 // pixel (uint16_t) is the Pixel's index in the strip from 1 to MAX_NUM_OF_PIXELS.
-void colorWipe(uint16_t pixel, int brightness, String strColor) {
+void colorWipe(uint16_t pixel, uint8_t brt, String strColor) {
   uint32_t uintColor;
   Serial.print("<Arduino-Pixel");
-  if (brightness > 0) {
+  if (brt > 0) {
     if (strColor.compareTo("r") == 0) {
       Serial.print("RedOn-");
-      uintColor = strip.Color(0, brightness, 0, 0);
+      uintColor = strip.Color(0, brt, 0, 0);
     } else if (strColor.compareTo("g") == 0) {
       Serial.print("GreenOn-");
-      uintColor = strip.Color(brightness, 0, 0, 0);
+      uintColor = strip.Color(brt, 0, 0, 0);
     } else if (strColor.compareTo("b") == 0) {
       Serial.print("BlueOn-");
-      uintColor = strip.Color(0, 0, brightness, 0);
+      uintColor = strip.Color(0, 0, brt, 0);
     } else if (strColor.compareTo("w") == 0) {
       Serial.print("WhiteOn-");
-      uintColor = strip.Color(0, 0, 0, brightness);
+      uintColor = strip.Color(0, 0, 0, brt);
+    } else if (strColor.compareTo("rgb") == 0 || strColor.compareTo("bgr") == 0) {
+      strColor.toUpperCase();
+      Serial.print(strColor);
+      Serial.print("On-");
+      uintColor = strip.Color(brt, brt, brt, 0);
     }
     strip.setPixelColor(pixel - 1, uintColor);
   } else {
