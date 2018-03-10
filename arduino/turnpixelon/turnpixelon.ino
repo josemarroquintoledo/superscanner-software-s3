@@ -11,7 +11,7 @@
   Created on February 2nd, 2018
   by Jose David Marroquin Toledo
 
-  Modified on March 8th, 2018
+  Modified on March 10th, 2018
   by Jose David Marroquin Toledo
   
   [1] https://github.com/adafruit/Adafruit_NeoPixel
@@ -31,6 +31,7 @@
 struct pixel {
   int number = -1;
   int brightness = 0;
+  String color = "w";
 };
 
 // From the strandtest example sketch (LGPL-3.0) by Adafruit
@@ -59,7 +60,8 @@ const int PIXEL_SEQ[MAX_NUM_OF_PIXELS] =  {1, 2, 3, 4, 5, 6, 7, 18, 17, 16, 15, 
 
 pixel lastPixel;
 String incomingSerialData;
-int commaIdx;  // Index number of the comma (',') in the main loop.
+int firstCommaIdx;  // Index number of the comma (',') in the main loop.
+int secondCommaIdx;
 bool useCustomSeq = false; 
 //
 int sequenceStack[MAX_NUM_OF_PIXELS];
@@ -81,24 +83,29 @@ void loop() {
   if (Serial.available() > 0) {
     incomingSerialData = Serial.readString();
     incomingSerialData.trim();
-    commaIdx = incomingSerialData.indexOf(',');
-    if (commaIdx != -1) {
-      int firstNum = incomingSerialData.substring(0, commaIdx + 1).toInt();
-      int secondNum = incomingSerialData.substring(commaIdx + 1).toInt();
-      if (firstNum > 0 && firstNum <= MAX_NUM_OF_PIXELS && secondNum >= 0 && secondNum <= 255) {
-        // firstNum (int) equals 0 is also the value for non-numeric strings.
-        lastPixel.number = incomingSerialData.substring(0, commaIdx + 1).toInt();
-        lastPixel.brightness = incomingSerialData.substring(commaIdx + 1).toInt();
+    incomingSerialData.toLowerCase();
+    firstCommaIdx = incomingSerialData.indexOf(',');
+    // The second comma is at least two characters later.
+    secondCommaIdx = incomingSerialData.indexOf(',', firstCommaIdx + 2);
+    if (firstCommaIdx != -1 && secondCommaIdx != -1) {
+      int pixel = incomingSerialData.substring(0, firstCommaIdx + 1).toInt();
+      int brt = incomingSerialData.substring(firstCommaIdx + 1, secondCommaIdx).toInt();
+      String color = incomingSerialData.substring(secondCommaIdx + 1);
+      if (pixel > 0 && pixel <= MAX_NUM_OF_PIXELS && brt >= 0 && brt <= 255
+          && (color.compareTo("r") == 0 || color.compareTo("g") == 0
+              || color.compareTo("b") == 0 || color.compareTo("w") == 0)) {
+        // The first Pixel is 1 not 0.
+        lastPixel.number = pixel;
+        lastPixel.color = color;
         if (useCustomSeq) {
           // Turn a Pixel on or off using the custom lighting sequence (const int PIXEL_SEQ[]).
-          colorWipe(PIXEL_SEQ[lastPixel.number - 1], lastPixel.brightness);
+          colorWipe(PIXEL_SEQ[lastPixel.number - 1], brt, lastPixel.color);
         } else {
           // Turn a Pixel on or off using the real lighting sequence.
-          colorWipe(lastPixel.number, lastPixel.brightness);
+          colorWipe(lastPixel.number, brt, lastPixel.color);
         }
       }
     } else {
-      incomingSerialData.toLowerCase();
       if (incomingSerialData.compareTo("useseq") == 0 && !useCustomSeq) {
         Serial.println("<CustomSeqUse>");
         useCustomSeq = true;
@@ -132,18 +139,18 @@ void initSequenceStack() {
 }
 
 // Gives a preview of the custome lighting sequence.
-void showSequence(int currentPixelIdx) {
+void showSequence(int currentPixelIdx, String strColor) {
   const int BRIGHTNESS_LEVEL = 31;
   const int DELAY_TIME = 300;
   Serial.println("<SequencePreviewStart>");
   for (int i = 0; i <= currentPixelIdx; i++) {
     delay(DELAY_TIME);
-    colorWipe(sequenceStack[i], BRIGHTNESS_LEVEL);
+    colorWipe(sequenceStack[i], BRIGHTNESS_LEVEL, strColor);
   }
   delay(DELAY_TIME * 4);
   // Turn the Pixel off 
   for (int i = 0; i <= currentPixelIdx; i++) {
-    colorWipe(sequenceStack[i], 0);
+    colorWipe(sequenceStack[i], 0, strColor);
   }
   Serial.println("<SequencePreviewEnd>");
   printLightingSeq();
@@ -161,6 +168,8 @@ void showSequence(int currentPixelIdx) {
 int setLightingSequence() {
   const int BRIGHTNESS_LEVEL = 31;
   const int JUMP_STEPS = 5;
+  const String COLOR = "r";
+  
   int currentPixel = 1;
   int stackPtr = -1;
   String incomingData;
@@ -169,7 +178,7 @@ int setLightingSequence() {
   Serial.println("<StripSetSequence>");
   initSequenceStack();
   turnAllOff();
-  colorWipe(currentPixel, BRIGHTNESS_LEVEL);  // Turn the first Pixel on.
+  colorWipe(currentPixel, BRIGHTNESS_LEVEL, COLOR);  // Turn the first Pixel on.
   while (true) {
     if (Serial.available() > 0) {
       incomingData = Serial.readString();
@@ -179,8 +188,8 @@ int setLightingSequence() {
         Serial.println("<StripForward>");
         prevPixel = currentPixel;
         currentPixel++;  // Go to the next Pixel in the strip.
-        colorWipe(prevPixel, 0);  // Turn the previous Pixel off.
-        colorWipe(currentPixel, BRIGHTNESS_LEVEL);  // Turn the current Pixel on.
+        colorWipe(prevPixel, 0, COLOR);  // Turn the previous Pixel off.
+        colorWipe(currentPixel, BRIGHTNESS_LEVEL, COLOR);  // Turn the current Pixel on.
       } else if (incomingData.compareTo("jf") == 0) {
         Serial.println("<StripJumpForward-" + String(JUMP_STEPS) + '>');
         prevPixel = currentPixel;
@@ -189,14 +198,14 @@ int setLightingSequence() {
           // Go to the last Pixel in the strip.
           currentPixel = MAX_NUM_OF_PIXELS - 1;
         }
-        colorWipe(prevPixel, 0);  // Turn the previous Pixel off.
-        colorWipe(currentPixel, BRIGHTNESS_LEVEL);  // Turn the current Pixel on.
+        colorWipe(prevPixel, 0, COLOR);  // Turn the previous Pixel off.
+        colorWipe(currentPixel, BRIGHTNESS_LEVEL, COLOR);  // Turn the current Pixel on.
       } else if (incomingData.compareTo("b") == 0 && currentPixel > 1) {
         Serial.println("<StripBack>");
         prevPixel = currentPixel;
         currentPixel--;  // Go to previous Pixel in the strip.
-        colorWipe(prevPixel, 0);  // Turn the previous Pixel off.
-        colorWipe(currentPixel, BRIGHTNESS_LEVEL);  // Turn the current Pixel on.
+        colorWipe(prevPixel, 0, COLOR);  // Turn the previous Pixel off.
+        colorWipe(currentPixel, BRIGHTNESS_LEVEL, COLOR);  // Turn the current Pixel on.
       } else if (incomingData.compareTo("jb") == 0) {
         Serial.println("<StripJumpBack-" + String(JUMP_STEPS) + '>');
         prevPixel = currentPixel;
@@ -205,8 +214,8 @@ int setLightingSequence() {
           // Go to the first Pixel in the strip.
           currentPixel = 1;
         }
-        colorWipe(prevPixel, 0);  // Turn the previous Pixel off.
-        colorWipe(currentPixel, BRIGHTNESS_LEVEL);  // Turn the current Pixel on.
+        colorWipe(prevPixel, 0, COLOR);  // Turn the previous Pixel off.
+        colorWipe(currentPixel, BRIGHTNESS_LEVEL, COLOR);  // Turn the current Pixel on.
       } else if (incomingData.compareTo("push") == 0) {
         inSeq = false;
         // Look for the current Pixel in the sequence to add it only if it does not exist.
@@ -229,9 +238,9 @@ int setLightingSequence() {
         stackPtr--;
         printLightingSeq();
       } else if (incomingData.compareTo("show") == 0) {
-        colorWipe(currentPixel, 0);  // Turn the current Pixel off.
-        showSequence(stackPtr);
-        colorWipe(currentPixel, BRIGHTNESS_LEVEL);  // Turn the current Pixel on again.
+        colorWipe(currentPixel, 0, COLOR);  // Turn the current Pixel off.
+        showSequence(stackPtr, COLOR);
+        colorWipe(currentPixel, BRIGHTNESS_LEVEL, COLOR);  // Turn the current Pixel on again.
       } else if (incomingData.compareTo("print") == 0) {
         printLightingSeq();
       } else if (incomingData.compareTo("q") == 0) {
@@ -258,24 +267,41 @@ void printLightingSeq() {
   Serial.println('}');
 }
 
-// Turns a Pixel on with the white color or turns it off.
+// Sets a Pixel to a red, green, blue or white color. If brightness (int) is 0, the Pixel will be
+// turned off.
 //
 // pixel (uint16_t) is the Pixel's index in the strip from 1 to MAX_NUM_OF_PIXELS.
-void colorWipe(uint16_t pixel, int brightness) {
-  strip.setPixelColor(pixel - 1, 0, 0, 0, brightness);
-  strip.show();
+void colorWipe(uint16_t pixel, int brightness, String strColor) {
+  uint32_t uintColor;
+  Serial.print("<Arduino-Pixel");
   if (brightness > 0) {
-    Serial.println("<Arduino-PixelOn-" + String(pixel) + ">");
+    if (strColor.compareTo("r") == 0) {
+      Serial.print("RedOn-");
+      uintColor = strip.Color(0, brightness, 0, 0);
+    } else if (strColor.compareTo("g") == 0) {
+      Serial.print("GreenOn-");
+      uintColor = strip.Color(brightness, 0, 0, 0);
+    } else if (strColor.compareTo("b") == 0) {
+      Serial.print("BlueOn-");
+      uintColor = strip.Color(0, 0, brightness, 0);
+    } else if (strColor.compareTo("w") == 0) {
+      Serial.print("WhiteOn-");
+      uintColor = strip.Color(0, 0, 0, brightness);
+    }
+    strip.setPixelColor(pixel - 1, uintColor);
   } else {
-    Serial.println("<Arduino-PixelOff-" + String(pixel) + ">");
+    Serial.print("Off-");
+    strip.setPixelColor(pixel - 1, 0);
   }
+  Serial.println(String(pixel) + ">");
+  strip.show();
 }
 
 // Turns all pixels (MAX_NUM_OF_PIXELS) off.
 void turnAllOff() {
   Serial.println("<StripTurnOff>");
   for (int i = 1; i <= MAX_NUM_OF_PIXELS; i++) {
-    colorWipe(i, strip.Color(0, 0, 0, 0));
+    colorWipe(i, 0, "w");  // It does not matter the color ("r", "g", "b" or "w").
   }
   Serial.println("<StripTurnedOff>");
 }
@@ -284,17 +310,19 @@ void turnAllOff() {
 void testPixels() {
   const int DELAY_TIME = 150;  // In miliseconds.
   const int BRIGHTNESS_LEVEL = 31;
+  const String COLOR = "r";
+  
   Serial.println("<StripTestStart>");
   turnAllOff();
   delay(DELAY_TIME);
   // Turn one Pixel on at a time and maintains it.
   for (int i = 0; i < MAX_NUM_OF_PIXELS; i++) {
-    colorWipe(PIXEL_SEQ[i], BRIGHTNESS_LEVEL);
+    colorWipe(PIXEL_SEQ[i], BRIGHTNESS_LEVEL, COLOR);
     delay(DELAY_TIME);
   }
   // Turn one Pixel off at a time.
   for (int i = MAX_NUM_OF_PIXELS - 1; i >= 0; i--) {
-    colorWipe(PIXEL_SEQ[i], 0);
+    colorWipe(PIXEL_SEQ[i], 0, COLOR);
     delay(DELAY_TIME);
   }
   for (int k = 0; k < 3; k++) {
@@ -302,14 +330,14 @@ void testPixels() {
       // Decrease the brightness level from brightness (int) to 0 of each Pixel.
       for (int i = BRIGHTNESS_LEVEL; i >= 0; i = i - 3) {
         for (int j = MAX_NUM_OF_PIXELS - 1; j >= 0; j--) {
-          colorWipe(PIXEL_SEQ[j], i);
+          colorWipe(PIXEL_SEQ[j], i, COLOR);
         }
       }    
     } else {
       // Increase the brightness level from 0 to brightness (int) of each Pixel.
       for (int i = 0; i < BRIGHTNESS_LEVEL + 1; i = i + 3) {
         for (int j = 0; j < MAX_NUM_OF_PIXELS; j++) {
-          colorWipe(PIXEL_SEQ[j], i);
+          colorWipe(PIXEL_SEQ[j], i, COLOR);
         }
       }
     }
