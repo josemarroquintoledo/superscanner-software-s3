@@ -13,7 +13,7 @@ The Framework (ES)
 Software Requirements
 ---------------------
 
-> **Note:** These Jupyter modules has been tested in machinas that run the 64-bit version of [**KDE neon User Edition 5.12**](http://neon.kde.org/) based on [**Ubuntu 16.04.1 LTS**](https://wiki.ubuntu.com/XenialXerus/ReleaseNotes?_ga=1.19022523.2089693014.1474004057).
+> **Note:** These Jupyter modules has been tested in machinas that run the 64-bit version of [**KDE neon User Edition 5.12**](http://neon.kde.org/) based on the latest **Ubuntu 16.04 LTS**.
 
 S3 is written in Python 3. Some modules can be executed from [Jupyter](http://jupyter.org) notebooks, as scripts in [Blender](https://www.blender.org) or both.
 
@@ -26,9 +26,9 @@ $ cd ~
 $ git clone https://github.com/josemarroquintoledo/superscanner-software-s3.git
 ```
 
-* [**Anaconda Distribution**](https://www.anaconda.com/download/#linux): Python +  &#171;250+ popular data science packages &#187;. Please, install the version for Python 3, because **S3 only works with Python 3**.
+* [**Anaconda Distribution**](https://www.anaconda.com/download/#linux): Python +  &#171;250+ popular data science packages&#187;. Please, install the version for Python 3, because **S3 only works with Python 3**.
 
-### Microscopy
+### Microscopy (for [Microscopx](https://www.thingiverse.com/thing:2819042))
 
 [**OpenCV**](https://github.com/opencv/opencv/releases). We have tried with the 3.1.0 version and it works well (to 2018 March, 27th). After installing Anaconda Distribution, go to the command line and execute: `$ conda install opencv`.
 
@@ -50,7 +50,7 @@ We suggest the following order:
 
 7. [**MeshLab**](http://meshlab.sourceforge.net). Install with: `$ sudo apt-get install meshlab`.
 
-Folders' Description
+Folders' Descriptions
 --------------------
 
 Within the main folder:
