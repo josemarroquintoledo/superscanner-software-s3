@@ -15,7 +15,7 @@ Software Requirements
 
 > **Note:** These Jupyter modules has been tested in machinas that run the 64-bit version of [**KDE neon User Edition 5.12**](http://neon.kde.org/) based on [**Ubuntu 16.04.1 LTS**](https://wiki.ubuntu.com/XenialXerus/ReleaseNotes?_ga=1.19022523.2089693014.1474004057).
 
-S3 is written in Python 3. Some modules can be executed from notebooks [Jupyter](http://jupyter.org), as scripts in [Blender](https://www.blender.org) or both.
+S3 is written in Python 3. Some modules can be executed from [Jupyter](http://jupyter.org) notebooks, as scripts in [Blender](https://www.blender.org) or both.
 
 ### Common
 
@@ -53,24 +53,28 @@ We suggest the following order:
 Folders' Description
 --------------------
 
-Within the main folder, **superscanner-software-s3**:
+Within the main folder:
 
-- **[blend-meshes](blend-meshes/)**: it **contains printable parts and pieces** of SuperScanner Hardware (S2H), **the complete model** of the machine manipulable in Blender and **scenes that execute Blender scripts**.
+* [**arduino**](arduino/): Contains **Arduino sketch projects'** folders. For example, there is a sketch to turn Pixels on or off, test them or set a custom lighting sequence of the NeoPixel illuminator of [Microscopx](https://www.thingiverse.com/thing:2819042).
 
-- **[examples](examples/)**: it is a folder with **sample Jupyter notebooks**.
+* [**blend-meshes**](blend-meshes/): Folder for the **printable parts and pieces** of SuperScanner Hardware (S2H), **the complete model** of the machine manipulable in Blender and **scenes that execute the Blender scripts**.
 
-- **[img](img/)**: it has **pictures** that are used by some notebooks.
+* [**examples**](examples/): Folder with **sample Jupyter notebooks** to try, for example, the Fourier Ptychography imaging technique from a simulated or real image set.
 
-- **[jupyter-modules](jupyter-modules/)**: it contains **Python modules (libraries) written as Jupyter notebooks**. For example, this notebooks are used by the Fourier Ptychography algorithm and to access to the data and functions of Blender outside of it to simulate the picture taking process for photogrammetry, among others.
+* [**img**](img/): Contains some **pictures** that are used by some notebooks.
 
-- **[scripts](scripts/)**: it contains **Python scripts** used to call the external software during the photogrammetry process, put the LEDs in the illuminator ring in the blend model of the machine (S2H), among others.
+* [**jupyter-modules**](jupyter-modules/): Where the **Python modules written as Jupyter notebooks** are stored. For example, there are notebooks that are used by the Fourier Ptychography reconstruction algorithm and access to the data and functions of Blender outside of this and simulate the picture taking process for photogrammetry.
+
+* [**parts**](parts/): For now, the **FreeCAD source and STL files of [Microscopx](https://www.thingiverse.com/thing:2819042)** are stored there.
+
+* [**scripts**](scripts/): Contains **Python scripts** (.py), for example, to call the external software during the photogrammetry process and put the LEDs in the illuminator in the blend model of the machine (S2H).
 
 Importing and Executing the Code
 --------------------------------
 
 ### In Blender
 
-The files within **blend-scripts** can be imported in Blender from **Choose Screen layout**&rarr;**Scripting**&rarr;<kbd>Open</kbd>. To execute them, press <kbd>Run Script</kbd> button and wait for the result.
+Blend scripts can be imported in Blender from **Choose Screen layout**&rarr;**Scripting**&rarr;<kbd>Open</kbd>. To execute them, press <kbd>Run Script</kbd> button and wait for the result.
 
 Main References
 ----------
