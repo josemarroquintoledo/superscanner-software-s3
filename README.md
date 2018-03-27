@@ -1,48 +1,54 @@
 SuperScanner Software (S3)
-===========================
+==========================
 
-SuperScanner Software (S3) is an **free and open-source software environment used for implementing a low-cost scanner 3D**, which can also function as a **microscope and a 3D printer**. S3 is the software portion of [**SuperScanner**](http://en.superscanner.cl) project.
+SuperScanner Software (S3) is an **free and open-source software environment used for implementing a low-cost scanner 3D**, which can also function as a **microscope and a 3D printer**. S3 is the software portion of [**SuperScanner**](http://en.superscanner.cl) project. SuperScanner Software (S3) is **licensed under [GPLv2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)** license.
 
-The Framework
--------------
+S3 is compatible with [Microscopx](https://www.thingiverse.com/thing:2819042), a project that enhances a low-cost microscope with this software.
+
+The Framework (ES)
+------------------
 
 ![SuperScanner's Framework](img/for-doc/SS-framework_EN_1920x1358.png)
 
 Software Requirements
 ---------------------
 
-> **Note:** the correct functioning of these Jupyter modules has been tested in machines that run the 64-bit version of **[Linux Mint 18 'Sarah'](https://www.linuxmint.com/rel_sarah_cinnamon_whatsnew.php)** and **[budgie-remix](https://budgie-remix.org)** that are based on **[Ubuntu 16.04.1 LTS](https://wiki.ubuntu.com/XenialXerus/ReleaseNotes?_ga=1.19022523.2089693014.1474004057)**.
+> **Note:** These Jupyter modules has been tested in machinas that run the 64-bit version of [**KDE neon User Edition 5.12**](http://neon.kde.org/) based on [**Ubuntu 16.04.1 LTS**](https://wiki.ubuntu.com/XenialXerus/ReleaseNotes?_ga=1.19022523.2089693014.1474004057).
 
-S3 is a set of Python modules to be executed in notebook [Jupyter](http://jupyter.org) and [Blender](https://www.blender.org). For that, you have to **install the software packages in the list below**. We suggest the following order:
+S3 is written in Python 3. Some modules can be executed from notebooks [Jupyter](http://jupyter.org), as scripts in [Blender](https://www.blender.org) or both.
 
-1. [**Git**](https://git-scm.com). Install it from command-line too with ``$ sudo apt-get install git``.
+### Common
 
-2. [**openMVG**](https://github.com/openMVG/openMVG) by [pmoulon](https://github.com/pmoulon) to &#171;recover camera poses and a sparse 3D point-cloud from an input set of images&#187; to reconstruct its 3D model. See its [building tex file](https://raw.githubusercontent.com/openMVG/openMVG/master/BUILD).
-
-3. [**openMVS**](https://github.com/cdcseacave/openMVS) by [cdcseacave](https://github.com/cdcseacave) &#171;to recover the full surface of the scene to be reconstructed&#187; from the camera poses and the sparse 3D point-cloud obtained with openMVG. See the [building wiki page](https://github.com/cdcseacave/openMVS/wiki/Building) of this software project.
-
-4. [**Anaconda3 (Python 3.5) 4.1.1**](https://www.continuum.io/downloads).
-
-5. [**Numba**](http://numba.pydata.org) speed up the execution of the implementation of our Python code &laquo;generating optimized machine code using the LLVM compiler infrastructure at import time, runtime, or statically&raquo;. The installation of Numba is easy after installing [Anaconda](https://www.continuum.io/downloads). For that, from the command-line: `$ conda install numba`.
-
-6. [**Blender 2.77a**](https://www.blender.org/download/). It does not require to be installed: download it, untar it and execute it. It also be installed from the command-line with ``$ sudo apt-get install blender``.
-
-7. [**Mesurelt**](https://github.com/Antonioya/blender/tree/master/measureit) (optional) by [Antonioya](https://github.com/Antonioya) is an add-on &laquo;for displaying measures [of meshes] in the vewport&raquo; in Blender. Download the .ZIP file and install it in Blender from **File**&rarr;**User Preferences...**&rarr;**Add-ons**&rarr;<kbd>Install from File...</kbd>
-
-8. [**py3exiv2**](http://www.py3exiv2.tuxfamily.org). It allows to use the lib exiv2 with Python 3. exiv2 is a C++ library designed to handle the EXIF image metadata.
-
-9. [**IPython for Blender**](https://github.com/panzi/blender_ipython) by [panzi](https://github.com/panzi) to run Blender script in Jupyter notebooks. Before to follow the instructions from [there](https://github.com/panzi/blender_ipython), **make sure you installed the dependences**, because Anaconda3 does not resolve them: `$ sudo apt-get install python3-pip & sudo pip3 install --upgrade pip jupyter ipython notebook`.
-
-10. [**MeshLab**](http://meshlab.sourceforge.net) to manipulate the 3D models (results). Install with: `$ sudo apt-get install meshlab`.
-
-After the installation of the requirements, (step **11th**) **download SuperScanner Software** and **run Jupyter** by first time:
+* [**Git**](https://git-scm.com). Install it from command-line with `$ sudo apt-get install git`. After installing, execute:
 
 ```
 $ cd ~
 $ git clone https://github.com/josemarroquintoledo/superscanner-software-s3.git
-$ cd superscanner-software-s3
-$ jupyter notebook
 ```
+
+* [**Anaconda Distribution**](https://www.anaconda.com/download/#linux): Python +  &#171;250+ popular data science packages &#187;. Please, install the version for Python 3, because **S3 only works with Python 3**.
+
+### Microscopy
+
+[**OpenCV**](https://github.com/opencv/opencv/releases). We have tried with the 3.1.0 version and it works well (to 2018 March, 27th). After installing Anaconda Distribution, go to the command line and execute: `$ conda install opencv`.
+
+### 3D Scanning (simulated)
+
+We suggest the following order:
+
+1. [**openMVG**](https://github.com/openMVG/openMVG) by [pmoulon](https://github.com/pmoulon) to &#171;recover camera poses and a sparse 3D point-cloud from an input set of images&#187;.
+
+2. [**openMVS**](https://github.com/cdcseacave/openMVS) by [cdcseacave](https://github.com/cdcseacave) &#171;to recover the full surface of the scene to be reconstructed&#187; from the camera poses and the sparse 3D point-cloud obtained with openMVG.
+
+3. [**Blender**](https://www.blender.org/download/). It can be installed from the command-line with `$ sudo apt-get install blender`.
+
+4. [**Mesurelt**](https://github.com/Antonioya/blender/tree/master/measureit) (optional) by [Antonioya](https://github.com/Antonioya) is an add-on &laquo;for displaying measures \[of meshes\] in the vewport&raquo; in Blender. Download the ZIP file and install it in Blender from **File** &rarr; **User Preferences...** &rarr; **Add-ons** &rarr; <kbd>Install from File...</kbd>
+
+5. [**py3exiv2**](http://www.py3exiv2.tuxfamily.org): Allows to use the lib exiv2 with Python 3. exiv2 is a C++ library designed to handle the EXIF image metadata.
+
+6. [**IPython for Blender**](https://github.com/panzi/blender_ipython) by [panzi](https://github.com/panzi) to run Blender scripts in Jupyter notebooks. Before installing, make sure you installed the dependences. Anaconda Distribution does not resolve them: `$ sudo apt-get install python3-pip & sudo pip3 install --upgrade pip jupyter ipython notebook`.
+
+7. [**MeshLab**](http://meshlab.sourceforge.net). Install with: `$ sudo apt-get install meshlab`.
 
 Folders' Description
 --------------------
@@ -62,25 +68,15 @@ Within the main folder, **superscanner-software-s3**:
 Importing and Executing the Code
 --------------------------------
 
-### In Jupyter
-
-Executing `%run <notebook module>` within a cell, can call functions of the notebook module.
-
-In any notebook, a cell is executed from **Cells**&rarr;**Run Cell** or with <kbd>Shift</kbd> &#43; <kbd>Enter</kbd>.
-
 ### In Blender
 
 The files within **blend-scripts** can be imported in Blender from **Choose Screen layout**&rarr;**Scripting**&rarr;<kbd>Open</kbd>. To execute them, press <kbd>Run Script</kbd> button and wait for the result.
 
-References
+Main References
 ----------
 
-Dong, S. Guo, K. Nanda, P. Shiradkar, R. & Zheng, G. (2014). FPscope: a field-portable high-resolution microscope using a cellphone lens. *Biomed. Opt. Express, 5*, 3305-3310.
+Spring, K.; Komatsu H.; Scott, M.; Schwartz, S.; Fellers, T.; Carr, K.; Parry-Hill, M y Davidson, M. (2017). *Microscopy Basics | MicroscopyU*. Retrieved from https://www.microscopyu.com/microscopy-basics
 
-Zheng, G. Ou, X. Hortsmeyer, R. Chung, J. & Yang, Ch. (2014). Fourier Ptychographic Microscopy: A Gigapixel Superscope for Biomedicine. *Optics & Photonics News, 25*, 26-33.
+UCLA Technology Development Group. (2017). *Computational Out-Of-Focus Imaging Increases The Space-Bandwidth Product In Lens-Based Coherent Microscopy*. Retrieved from https://techtransfer.universityofcalifornia.edu/NCD/28827.html
 
-Zheng, G. (2015). *Fourier Ptychographic Imaging: A MATLAB® tutorial*. San Rafael, CA: Morgan & Claypool Publishers.
-
-Dong, S. (2014). *Development of Gigapixel Microscopy*. Retrieved from http://digitalcommons.uconn.edu/gs_theses/687/
-
-Ou, X. Horstmeyer, R. Zheng, G. & Yang, Ch. (2015). High numerical aperture Fourier ptychography: principle, implementation and characterization. *Opt. Express, 23*, 3472-3491.
+Zheng, G. (2016). *Fourier Ptychographic Imaging: A MATLAB® tutorial*. San Rafael, CA: Morgan & Claypool Publishers.
