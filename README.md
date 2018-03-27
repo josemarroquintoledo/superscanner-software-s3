@@ -8,7 +8,7 @@ S3 is compatible with [Microscopx](https://www.thingiverse.com/thing:2819042), a
 The Framework (ES)
 ------------------
 
-![SuperScanner's Framework](img/for-doc/SS-framework_EN_1920x1358.png)
+![SuperScanner's Framework](img/for-doc/SS-framework-ES_1280x905.png)
 
 Software Requirements
 ---------------------
