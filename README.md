@@ -1,10 +1,10 @@
 SuperScanner Software (S3)
-===========================
+==========================
 
 SuperScanner Software (S3) is an **free and open-source software environment used for implementing a low-cost scanner 3D**, which can also function as a **microscope and a 3D printer**. S3 is the software portion of [**SuperScanner**](http://en.superscanner.cl) project. SuperScanner Software (S3) is **licensed under [GPLv2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)** license.
 
-The Framework
--------------
+The Framework (ES)
+------------------
 
 ![SuperScanner's Framework](img/for-doc/SS-framework_EN_1920x1358.png)
 
@@ -38,7 +38,7 @@ We suggest the following order:
 
 2. [**openMVS**](https://github.com/cdcseacave/openMVS) by [cdcseacave](https://github.com/cdcseacave) &#171;to recover the full surface of the scene to be reconstructed&#187; from the camera poses and the sparse 3D point-cloud obtained with openMVG.
 
-3. [**Blender **](https://www.blender.org/download/). It can be installed from the command-line with `$ sudo apt-get install blender`.
+3. [**Blender**](https://www.blender.org/download/). It can be installed from the command-line with `$ sudo apt-get install blender`.
 
 4. [**Mesurelt**](https://github.com/Antonioya/blender/tree/master/measureit) (optional) by [Antonioya](https://github.com/Antonioya) is an add-on &laquo;for displaying measures \[of meshes\] in the vewport&raquo; in Blender. Download the ZIP file and install it in Blender from **File** &rarr; **User Preferences...** &rarr; **Add-ons** &rarr; <kbd>Install from File...</kbd>
 
@@ -70,15 +70,11 @@ Importing and Executing the Code
 
 The files within **blend-scripts** can be imported in Blender from **Choose Screen layout**&rarr;**Scripting**&rarr;<kbd>Open</kbd>. To execute them, press <kbd>Run Script</kbd> button and wait for the result.
 
-References
+Main References
 ----------
 
-Dong, S. Guo, K. Nanda, P. Shiradkar, R. & Zheng, G. (2014). FPscope: a field-portable high-resolution microscope using a cellphone lens. *Biomed. Opt. Express, 5*, 3305-3310.
+Spring, K.; Komatsu H.; Scott, M.; Schwartz, S.; Fellers, T.; Carr, K.; Parry-Hill, M y Davidson, M. (2017). *Microscopy Basics | MicroscopyU*. Retrieved from https://www.microscopyu.com/microscopy-basics
 
-Zheng, G. Ou, X. Hortsmeyer, R. Chung, J. & Yang, Ch. (2014). Fourier Ptychographic Microscopy: A Gigapixel Superscope for Biomedicine. *Optics & Photonics News, 25*, 26-33.
+UCLA Technology Development Group. (2017). *Computational Out-Of-Focus Imaging Increases The Space-Bandwidth Product In Lens-Based Coherent Microscopy*. Retrieved from https://techtransfer.universityofcalifornia.edu/NCD/28827.html
 
-Zheng, G. (2015). *Fourier Ptychographic Imaging: A MATLAB® tutorial*. San Rafael, CA: Morgan & Claypool Publishers.
-
-Dong, S. (2014). *Development of Gigapixel Microscopy*. Retrieved from http://digitalcommons.uconn.edu/gs_theses/687/
-
-Ou, X. Horstmeyer, R. Zheng, G. & Yang, Ch. (2015). High numerical aperture Fourier ptychography: principle, implementation and characterization. *Opt. Express, 23*, 3472-3491.
+Zheng, G. (2016). *Fourier Ptychographic Imaging: A MATLAB® tutorial*. San Rafael, CA: Morgan & Claypool Publishers.
