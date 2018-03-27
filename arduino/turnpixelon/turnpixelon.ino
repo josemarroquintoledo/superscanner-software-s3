@@ -11,7 +11,7 @@
   Created on February 2nd, 2018
   by Jose David Marroquin Toledo
 
-  Modified on March 10th, 2018
+  Modified on March 17th, 2018
   by Jose David Marroquin Toledo
   
   [1] https://github.com/adafruit/Adafruit_NeoPixel
@@ -47,14 +47,14 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(MAX_NUM_OF_PIXELS, PIN, NEO_RGBW + N
 //
 
 // Custom lighting sequence obtained with setLightingSequence() (int).
-const int PIXEL_SEQ[MAX_NUM_OF_PIXELS] =  {1, 2, 3, 4, 5, 6, 7, 18, 17, 16, 15, 14, 13, 12, 11,
-                                           10, 9, 8, 23, 22, 21, 20, 19, 46, 47, 24, 25, 26, 27,
-                                           28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41,
-                                           42, 43, 44, 45};
+const int PIXEL_SEQ[MAX_NUM_OF_PIXELS] =  {1, 4, 5, 6, 7, 2, 3, 20, 19, 18, 17, 16, 15, 14, 13, 12,
+                                           11, 10, 9, 8, 23, 22, 21, 30, 31, 32, 33, 34, 35, 36,
+                                           37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 24, 25, 26,
+                                           27, 28, 29};
 
 String incomingSerialData;
-int firstCommaIdx;  // Index number of the comma (',') in the main loop.
-int secondCommaIdx;
+int firstCommaIdx;  // Index number of 1st the comma (',') in the main loop.
+int secondCommaIdx;  // 2nd the comma (',') in the main loop.
 bool useCustomSeq = false; 
 //
 int sequenceStack[MAX_NUM_OF_PIXELS];
@@ -307,7 +307,9 @@ void testPixels() {
   const int DELAY_TIME = 150;  // In miliseconds.
   const int BRIGHTNESS_LEVEL = 31;
   const String COLOR = "r";
-  
+
+  int c = 0;
+  int pxBrt = 0;
   Serial.println("<StripTestStart>");
   turnAllOff();
   delay(DELAY_TIME);
@@ -321,22 +323,14 @@ void testPixels() {
     colorWipe(PIXEL_SEQ[i], 0, COLOR);
     delay(DELAY_TIME);
   }
-  for (int k = 0; k < 3; k++) {
-    if (k % 2 != 0) {
-      // Decrease the brightness level from brightness (int) to 0 of each Pixel.
-      for (int i = BRIGHTNESS_LEVEL; i >= 0; i = i - 3) {
-        for (int j = MAX_NUM_OF_PIXELS - 1; j >= 0; j--) {
-          colorWipe(PIXEL_SEQ[j], i, COLOR);
-        }
-      }    
-    } else {
-      // Increase the brightness level from 0 to brightness (int) of each Pixel.
-      for (int i = 0; i < BRIGHTNESS_LEVEL + 1; i = i + 3) {
-        for (int j = 0; j < MAX_NUM_OF_PIXELS; j++) {
-          colorWipe(PIXEL_SEQ[j], i, COLOR);
-        }
-      }
+  // Increase the brightness level from 0 to 255.
+  while (pxBrt <= 255) {
+    pxBrt = pow(2, c);
+    Serial.println(pxBrt);
+    for (int j = 0; j < MAX_NUM_OF_PIXELS; j++) {
+      colorWipe(PIXEL_SEQ[j], pxBrt, COLOR);
     }
+    c++;
   }
   Serial.println("<StripTestEnd>");
 }
