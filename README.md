@@ -1,7 +1,7 @@
 SuperScanner Software (S3)
 ==========================
 
-SuperScanner Software (S3) is an **free and open-source software environment used for implementing a low-cost scanner 3D**, which can also function as a **microscope and a 3D printer**. S3 is the software portion of [**SuperScanner**](http://en.superscanner.cl) project. SuperScanner Software (S3) is **licensed under [GPLv2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)** license.
+SuperScanner Software (S3) is an **free and open-source software environment used for implementing a low-cost scanner 3D**, which can also function as a **microscope and a 3D printer**. S3 is the software portion of [**SuperScanner**](http://en.superscanner.cl) project. SuperScanner Software is **licensed under [GPLv2](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)** license.
 
 S3 is compatible with [Microscopx](https://www.thingiverse.com/thing:2819042), a project that enhances a low-cost microscope with this software.
 
